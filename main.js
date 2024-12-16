@@ -39,8 +39,8 @@ async function getPlaylist(req, res) {
         console.log("Done");
         console.log(playlistData);
 
-        res.writeHead(200, { 'Content-Type': 'text/plain' });
-        res.end(playlistData);
+        res.writeHead(200, { 'Content-Type': 'text/json' });
+        res.end(JSON.stringify(playlistData, null, 2));
     } catch (err) {
         console.error("Error:", err.message);
         res.writeHead(500, { 'Content-Type': 'text/plain' });
@@ -64,10 +64,48 @@ async function getPlaylistData(req) {
 
             try {
                 const data = fs.readFileSync(playlist, 'utf8');
-                resolve(data);
+                resolve(formatPlaylistData(data, playlist));
             } catch (err) {
-                reject(new Error("File not found or cannot be read"));
+                reject(new Error("File not found or cannot be read" + err));
             }
         });
     });
+}
+
+/**
+ * @typedef {{folder: string, files: string[]}} PlaylistData
+ */
+
+/**
+ * 
+ * @param {string} data 
+ * @param {string} path 
+ * @returns {PlaylistData}
+ */
+function formatPlaylistData(data, path){
+    return {
+        folder: formatPlaylistPath(path),
+        files: formatPath(data).split('\n')
+    }
+}
+
+/**
+ * 
+ * @param {string} path 
+ * @returns {string}
+ */
+function formatPlaylistPath(path){
+    const result = path.split("\\");
+    result.pop();
+    return formatPath(result.join("\\"));
+}
+
+/**
+ * 
+ * @param {string} pathStr 
+ * @returns {string}
+ */
+function formatPath(pathStr){
+    pathStr = pathStr.replace(/\r/g, "").replace(/\\/g, "/");
+    return pathStr;
 }
