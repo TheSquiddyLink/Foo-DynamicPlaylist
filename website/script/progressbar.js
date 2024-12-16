@@ -6,7 +6,7 @@ async function submitForm(event) {
     event.preventDefault();
     const formData = new FormData(document.getElementById("form"));
 
-    document.querySelector(".progressStats").style.display = "block";
+    document.querySelector(".progressStats").classList.remove("hidden");
     
     var processing = true;
 
@@ -32,10 +32,9 @@ async function submitForm(event) {
     }
     updateData();
     document.querySelector(".progress").style.width = "100%";
-    let data = await fetch("/getTotal");
-    let jsonData = await data.json()
     document.getElementById("currentIndex").innerHTML = 1;
     document.getElementById("totalSize").innerHTML = await (await fetch("/getTotal")).text();
+    document.getElementById("songDataForm").classList.remove("hidden");
     displaySong(0)
 }
 
@@ -48,9 +47,16 @@ async function updateData(){
 
     document.getElementById("total").innerHTML = jsonData.total;
     document.getElementById("remaining").innerHTML = jsonData.remaining;
-    document.getElementById("elapsed").innerHTML = jsonData.elapsed;
+    document.getElementById("elapsed").innerHTML = formatTime(jsonData.elapsed);
     document.getElementById("failed").innerHTML = jsonData.failed;
 
+}
+
+function formatTime(ms){
+    let miliseconds = Math.floor(ms % 1000);
+    let seconds = Math.floor((ms / 1000) % 60);
+    let minutes = Math.floor(ms / (1000 * 60));
+    return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}.${miliseconds.toString().padStart(3, '0')}`;
 }
 
 function wait(ms){

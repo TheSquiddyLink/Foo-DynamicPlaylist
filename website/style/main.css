@@ -19,3 +19,8 @@
 .progressStats > div > * {
     display: inline;
 }
+
+
+.hidden {
+    display: none;
+}

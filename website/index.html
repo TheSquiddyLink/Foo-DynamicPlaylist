@@ -15,7 +15,7 @@
     <div class="progressContainer">
         <div class="progress"></div>
     </div>
-    <div class="progressStats">
+    <div class="progressStats hidden">
         <div>
             <label for="elapsed">Elapsed Time (ms):</label>
             <p id="elapsed">1000</p>
@@ -32,9 +32,10 @@
         </div>
     </div>
 
-    <form id="songDataForm" style="display: none;">
+    <form id="songDataForm" class="hidden">
         <div>
             <p>
+                Song: 
                 <span id="currentIndex">?</span>/
                 <span id="totalSize">?</span>
             </p>
@@ -70,7 +71,7 @@
     </form>
 
 
-    <pre id="result"></pre>
+    <pre id="result" class="hidden"></pre>
 </body>
 <script src="./script/progressbar.js"></script>
 <script src="./script/songData.js"></script>
