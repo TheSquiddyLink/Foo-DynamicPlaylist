@@ -15,15 +15,24 @@
     <div class="progressContainer">
         <div class="progress"></div>
     </div>
-    <div class="progressStats" style="display: none;">
-        <p id="elapsed"></p>
-        <p>
-            <span id="remaining"></span>/<span id="total"></span>
-        </p>
-        <p id="failed"></p>
+    <div class="progressStats">
+        <div>
+            <label for="elapsed">Elapsed Time (ms):</label>
+            <p id="elapsed">1000</p>
+        </div>
+        <div>
+            <label for="remaining">Remaining Songs:</label>
+            <p>
+                <span id="remaining">20</span>/<span id="total">30</span>
+            </p>
+        </div>
+        <div>
+            <label for="failed">Failed:</label>
+            <p id="failed">2</p>
+        </div>
     </div>
 
-    <form id="songDataForm">
+    <form id="songDataForm" style="display: none;">
         <div>
             <p>
                 <span id="currentIndex">?</span>/
