@@ -4,7 +4,7 @@ document.getElementById("form").addEventListener("submit", submitForm);
 async function submitForm(event) {
 
     event.preventDefault();
-    const formData = new FormData(document.querySelector('form'));
+    const formData = new FormData(document.getElementById("form"));
 
     document.querySelector(".progressStats").style.display = "block";
     

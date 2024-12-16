@@ -24,15 +24,40 @@
     </div>
 
     <form id="songDataForm">
-        <p>
-            <span id="currentIndex">?</span>/
-            <span id="totalSize">?</span>
-        </p>
-        <p id="title"></p>
-        <p id="album"></p>
-        <p id="artist"></p>
-        <button id="prev">Prev</button>
-        <button id="next">Next</button>
+        <div>
+            <p>
+                <span id="currentIndex">?</span>/
+                <span id="totalSize">?</span>
+            </p>
+            <p id="title"></p>
+            <p id="album"></p>
+            <p id="artist"></p>
+        </div>
+        <div>
+            <label for="timeOfDay">Time of Day</label>
+            <div>
+                <label for="timeOfDayMorning">
+                    <input type="checkbox" id="timeOfDayMorning" name="timeOfDay" value="Morning"> Morning
+                </label>
+                <label for="timeOfDayDay">
+                    <input type="checkbox" id="timeOfDayDay" name="timeOfDay" value="Day"> Day
+                </label>
+                <label for="timeOfDayEvening">
+                    <input type="checkbox" id="timeOfDayEvening" name="timeOfDay" value="Evening"> Evening
+                </label>
+                <label for="timeOfDayNight">
+                    <input type="checkbox" id="timeOfDayNight" name="timeOfDay" value="Night"> Night
+                </label>
+            </div>
+            <input style="display: none;" id="currentIndexInput" name="currentIndex">
+            <label for="temp">Temperature</label>
+            <input type="number" id="temp" name="temp" placeholder="Temperature" min="0" max="100">
+        </div>
+        <button type="submit">Submit</button>
+        <div>
+            <button id="prev">Prev</button>
+            <button id="next">Next</button>
+        </div>
     </form>
 
 

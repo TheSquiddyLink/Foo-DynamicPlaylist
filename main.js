@@ -3,12 +3,10 @@ import fs from 'fs';
 import path from 'path';
 import formidable from 'formidable'
 import { parseFile } from 'music-metadata'
+import NodeID3 from 'node-id3';
 
 const folder =  "./website"
 
-/**
- * @type {PlaylistData}
- */
 var playlistData;
 
 const server = http.createServer((req, res) => {
@@ -16,6 +14,11 @@ const server = http.createServer((req, res) => {
     console.log(req.url);
     if(req.url == "/getPlaylist"){
         getPlaylist(req, res);
+        return;
+    }
+
+    if(req.url == "/setSong"){
+        setSong(req, res);
         return;
     }
 
@@ -159,6 +162,7 @@ async function getSongData(songPath){
             title: metadata.common.title,
             artist: metadata.common.artist,
             album: metadata.common.album,
+            path: songPath
         }
     } catch (err) {
         console.error('Error:', err.message);
@@ -242,4 +246,48 @@ async function getAllSongData(playlist){
 function getPlaylistStatus(req, res) {
    res.writeHead(200, { 'Content-Type': 'text/json' });
    res.end(JSON.stringify(playlistStatus, null, 2));
+}
+
+function setSong(req, res) {
+    const form = formidable({});
+    form.parse(req, async (err, fields) => {
+        if (err) {
+            console.error("Error parsing form data:", err);
+            res.writeHead(500, { 'Content-Type': 'text/plain' });
+            res.end("Error parsing form data");
+            return;
+        }
+        const index = fields.currentIndex[0];
+        const song = playlistData.files[index];
+        const timeOfDay = fields.timeOfDay;
+        const temp = fields.temp[0];
+
+
+        NodeID3.update({
+            TXXX: [
+                //TODO: Change to class/object relation
+                {
+                    description: "SQUIBS_MORNING",
+                    value: timeOfDay.includes("morning") ? "true" : "false"
+                },
+                {
+                    description: "SQUIBS_DAY",
+                    value: timeOfDay.includes("day") ? "true" : "false"
+                },
+                {
+                    description: "SQUIBS_EVENING",
+                    value: timeOfDay.includes("evening") ? "true" : "false"
+                },
+                {
+                    description: "SQUIBS_NIGHT",
+                    value: timeOfDay.includes("night") ? "true" : "false"
+                },
+                {
+                    description: "SQUIBS_TEMP",
+                    value: temp
+                }
+            ] 
+            }, song.path);
+        console.log(song);
+    })
 }

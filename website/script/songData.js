@@ -3,6 +3,7 @@ async function displaySong(index){
     document.getElementById("title").innerHTML = data.title;
     document.getElementById("artist").innerHTML = data.artist;
     document.getElementById("album").innerHTML = data.album;
+    document.getElementById("currentIndexInput").value = index;
 }
 
 
@@ -40,5 +41,15 @@ async function changeSong(event, direction) {
   
 }
 
+function submitTags(event){
+    event.preventDefault();
+    const formData = new FormData(document.getElementById("songDataForm"));
+    fetch('/setSong', {
+        method: 'POST',
+        body: formData
+    })
+}
+
 document.getElementById("next").addEventListener("click", (event) => changeSong(event, 'next'));
 document.getElementById("prev").addEventListener("click", (event) => changeSong(event, 'prev'));
+document.getElementById("songDataForm").addEventListener("submit", submitTags);
