@@ -17,6 +17,7 @@ async function submitForm(event) {
     .then(response => response.json())
     .then(data => {
         console.log('Success:', data);
+        document.getElementById("result").innerHTML = JSON.stringify(data, null, 2);
         processing = false;
     })
     .catch((error) => {

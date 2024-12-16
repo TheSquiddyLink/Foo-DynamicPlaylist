@@ -208,7 +208,7 @@ async function getAllSongData(playlist){
     const endTime = Date.now();
     const duration = endTime - startTime;
     result.elapsed = duration;
-
+    playlistStatus.status = "complete";
     return result;
 
 }
