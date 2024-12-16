@@ -6,6 +6,11 @@ import { parseFile } from 'music-metadata'
 
 const folder =  "./website"
 
+/**
+ * @type {PlaylistData}
+ */
+var playlistData;
+
 const server = http.createServer((req, res) => {
     const filePath = path.join(folder, 'index.html');
     console.log(req.url);
@@ -14,11 +19,32 @@ const server = http.createServer((req, res) => {
         return;
     }
 
+    if(req.url == "/getTotal"){
+        res.writeHead(200, { 'Content-Type': 'text/plain' });
+        if(playlistData.files){
+            res.end(playlistData.files.length.toString());
+        }else {
+            res.end("0");
+        }
+        return;
+    }
+
     if(req.url == "/playlistStatus"){
         getPlaylistStatus(req, res);
         return;
     }
 
+    if(req.url.includes("/getSongData")){
+        var index = req.url.split("-")[1];
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        if(Number(index) >= playlistData.files.length) {
+            res.end("{}");
+        }
+        var data = playlistData.files[Number(index)]
+        
+        res.end(JSON.stringify(data));
+        return;
+    }
     if(req.url.includes(".css") || req.url.includes(".js")){
         console.log(req.url);
         res.writeHead(200, { 'Content-Type': 'text/css' });
@@ -48,12 +74,12 @@ server.listen(PORT, () => {
  */
 async function getPlaylist(req, res) {
     try {
-        const playlistData = await getPlaylistData(req);
+        const rawData = await getPlaylistData(req);
         console.log("Done");
-        console.log(playlistData);
+        console.log(rawData);
 
-        const allSongsData = await getAllSongData(playlistData);
-
+        const allSongsData = await getAllSongData(rawData);
+        playlistData = allSongsData;
         res.writeHead(200, { 'Content-Type': 'text/json' });
         res.end(JSON.stringify(allSongsData, null, 2));
     } catch (err) {

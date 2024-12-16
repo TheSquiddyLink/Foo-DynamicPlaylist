@@ -32,6 +32,11 @@ async function submitForm(event) {
     }
     updateData();
     document.querySelector(".progress").style.width = "100%";
+    let data = await fetch("/getTotal");
+    let jsonData = await data.json()
+    document.getElementById("currentIndex").innerHTML = 1;
+    document.getElementById("totalSize").innerHTML = await (await fetch("/getTotal")).text();
+    displaySong(0)
 }
 
 async function updateData(){
@@ -45,6 +50,7 @@ async function updateData(){
     document.getElementById("remaining").innerHTML = jsonData.remaining;
     document.getElementById("elapsed").innerHTML = jsonData.elapsed;
     document.getElementById("failed").innerHTML = jsonData.failed;
+
 }
 
 function wait(ms){
