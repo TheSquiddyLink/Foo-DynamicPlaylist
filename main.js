@@ -33,23 +33,41 @@ server.listen(PORT, () => {
  * @param {http.IncomingMessage} req 
  * @param {http.ServerResponse<http.IncomingMessage>} res 
  */
-function getPlaylist(req, res){
-    const form = formidable({});
-    form.parse(req, (err, fields, files) => {
-        if (err) {
-            res.writeHead(500, { 'Content-Type': 'text/plain' });
-            res.end('Server Error');
-            return
-        }
-        const playlist = fields.playlist[0];
-            let fileData;
+async function getPlaylist(req, res) {
+    try {
+        const playlistData = await getPlaylistData(req);
+        console.log("Done");
+        console.log(playlistData);
+
+        res.writeHead(200, { 'Content-Type': 'text/plain' });
+        res.end(playlistData);
+    } catch (err) {
+        console.error("Error:", err.message);
+        res.writeHead(500, { 'Content-Type': 'text/plain' });
+        res.end(err.message);
+    }
+}
+
+async function getPlaylistData(req) {
+    return new Promise((resolve, reject) => {
+        const form = formidable({});
+        form.parse(req, async (err, fields) => {
+            if (err) {
+                return reject(new Error("Error parsing form data"));
+            }
+
+            const playlist = fields.playlist[0]; 
+            console.log(playlist);
+            if (!playlist) {
+                return reject(new Error("Playlist field is missing"));
+            }
+
             try {
-                fileData = fs.readFileSync(playlist, 'utf8');
+                const data = fs.readFileSync(playlist, 'utf8');
+                resolve(data);
             } catch (err) {
-                res.writeHead(404, { 'Content-Type': 'text/plain' });
-                res.end('File Not Found');
-                return;
-            }            
-            console.log(fileData);
-    })
+                reject(new Error("File not found or cannot be read"));
+            }
+        });
+    });
 }
