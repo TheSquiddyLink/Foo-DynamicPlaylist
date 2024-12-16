@@ -40,10 +40,10 @@ async function getPlaylist(req, res) {
         console.log("Done");
         console.log(playlistData);
 
-        console.log(await getSongData(getSongPath(playlistData, 0)));
+        const allSongsData = await getAllSongData(playlistData);
 
         res.writeHead(200, { 'Content-Type': 'text/json' });
-        res.end(JSON.stringify(playlistData, null, 2));
+        res.end(JSON.stringify(allSongsData, null, 2));
     } catch (err) {
         console.error("Error:", err.message);
         res.writeHead(500, { 'Content-Type': 'text/plain' });
@@ -114,14 +114,22 @@ function formatPath(pathStr){
 }
 
 async function getSongData(songPath){
+    if(!songPath) return;
     try {
         const metadata = await parseFile(songPath);
-        console.log('Title:', metadata.common.title);
-        console.log('Artist:', metadata.common.artist);
-        console.log('Album:', metadata.common.album);
-        console.log('Genre:', metadata.common.genre);
+        return {
+            title: metadata.common.title,
+            artist: metadata.common.artist,
+            album: metadata.common.album,
+        }
     } catch (err) {
         console.error('Error:', err.message);
+        return {
+            title: "Unknown",
+            artist: "Unknown",
+            album: "Unknown",
+            path: songPath
+        }
     }
 }
 
@@ -132,5 +140,32 @@ async function getSongData(songPath){
  * @returns {string}
  */
 function getSongPath(data,i){
+    if(data.files[i] == "") return null;
     return data.folder + "/" + data.files[i];
+}
+
+/**
+ * 
+ * @param {PlaylistData} playlist 
+ */
+async function getAllSongData(playlist){
+    const result = {
+        folder: playlist.folder,
+        elapsed : 0,
+        files: []
+    }
+
+    const startTime = Date.now();
+    for(let i = 0; i < playlist.files.length; i++){
+        let song = await getSongData(getSongPath(playlist, i));
+        if(song){
+            result.files.push(song);
+        }
+    }
+    const endTime = Date.now();
+    const duration = endTime - startTime;
+    result.elapsed = duration;
+
+    return result;
+
 }
