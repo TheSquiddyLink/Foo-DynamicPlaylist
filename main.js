@@ -2,6 +2,7 @@ import http, { get } from 'http';
 import fs from 'fs';
 import path from 'path';
 import formidable from 'formidable'
+import { parseFile } from 'music-metadata'
 
 const folder =  "./website"
 
@@ -38,6 +39,8 @@ async function getPlaylist(req, res) {
         const playlistData = await getPlaylistData(req);
         console.log("Done");
         console.log(playlistData);
+
+        console.log(await getSongData(getSongPath(playlistData, 0)));
 
         res.writeHead(200, { 'Content-Type': 'text/json' });
         res.end(JSON.stringify(playlistData, null, 2));
@@ -108,4 +111,26 @@ function formatPlaylistPath(path){
 function formatPath(pathStr){
     pathStr = pathStr.replace(/\r/g, "").replace(/\\/g, "/");
     return pathStr;
+}
+
+async function getSongData(songPath){
+    try {
+        const metadata = await parseFile(songPath);
+        console.log('Title:', metadata.common.title);
+        console.log('Artist:', metadata.common.artist);
+        console.log('Album:', metadata.common.album);
+        console.log('Genre:', metadata.common.genre);
+    } catch (err) {
+        console.error('Error:', err.message);
+    }
+}
+
+/**
+ * 
+ * @param {PlaylistData} data 
+ * @param {Number} i 
+ * @returns {string}
+ */
+function getSongPath(data,i){
+    return data.folder + "/" + data.files[i];
 }
