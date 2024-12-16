@@ -8,7 +8,7 @@ const folder =  "./website"
 
 const server = http.createServer((req, res) => {
     const filePath = path.join(folder, 'index.html');
-
+    console.log(req.url);
     if(req.url == "/getPlaylist"){
         getPlaylist(req, res);
         return;
@@ -16,6 +16,13 @@ const server = http.createServer((req, res) => {
 
     if(req.url == "/playlistStatus"){
         getPlaylistStatus(req, res);
+        return;
+    }
+
+    if(req.url.includes(".css") || req.url.includes(".js")){
+        console.log(req.url);
+        res.writeHead(200, { 'Content-Type': 'text/css' });
+        res.end(fs.readFileSync(path.join(folder, req.url)));
         return;
     }
     fs.readFile(filePath, (err, data) => {
@@ -151,13 +158,28 @@ function getSongPath(data,i){
 
 var playlistStatus = {
     status: "inactive",
-    percentage: 0
-}
+    percentage: 0,
+    total: 0,
+    remaining: 0,
+    elapsed: 0,
+    failed: 0,
+    toDefault: function () {
+        this.status = "inactive";
+        this.percentage = 0;
+        this.total = 0;
+        this.remaining = 0;
+        this.elapsed = 0;
+        this.failed = 0;
+    }
+};
+
 /**
  * 
  * @param {PlaylistData} playlist 
  */
 async function getAllSongData(playlist){
+    if(playlistStatus.status == "processing") return;
+    playlistStatus.toDefault();
     const result = {
         folder: playlist.folder,
         elapsed : 0,
@@ -168,12 +190,20 @@ async function getAllSongData(playlist){
     playlistStatus.percentage = 0;
 
     const startTime = Date.now();
-    for(let i = 0; i < playlist.files.length; i++){
+    var length = playlist.files.length;
+    playlistStatus.total = length;
+    playlistStatus.remaining = length;
+    for(let i = 0; i < length; i++){
         let song = await getSongData(getSongPath(playlist, i));
         if(song){
             result.files.push(song);
-            playlistStatus.percentage = Math.round((i + 1) / playlist.files.length * 100);
+        }else {
+            console.log("Song Failed")
+            playlistStatus.failed++;
         }
+        playlistStatus.percentage = (i + 1) / length * 100;
+        playlistStatus.remaining--;
+        playlistStatus.elapsed = Date.now() - startTime;
     }
     const endTime = Date.now();
     const duration = endTime - startTime;
