@@ -4,11 +4,67 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        .progressContainer {
+            width: 100%;
+            height: 20px;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        .progress {
+            height: 100%;
+            background-color: #76c7c0;
+            width: 0%;
+            transition: width 0.5s ease-in-out;
+        }
+    </style>
 </head>
 <body>
-    <form method="post" action="/getPlaylist">
+    <form method="post" onsubmit="submitForm()">
         <label>Enter the file path to the m3u file</label>
         <input type="text" name="playlist" placeholder="c:path/to/file.m3u">
     </form>
+
+    <div class="progressContainer">
+        <div class="progress"></div>
+    </div>
 </body>
+<script>
+    async function submitForm() {
+
+        event.preventDefault(); // Prevent the form from redirecting the page
+        const formData = new FormData(document.querySelector('form'));
+        
+        var processing = true;
+
+        fetch('/getPlaylist', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+            processing = false;
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            processing = false;
+        });
+
+        while(processing) {
+            let data = await fetch("/playlistStatus");
+            let percentage = (await data.json()).percentage;
+            console.log(percentage);
+            document.querySelector(".progress").style.width = percentage + "%";
+            await wait(1000);
+        }
+        document.querySelector(".progress").style.width = "100%";
+    }
+
+    function wait(ms){
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+</script>
 </html>

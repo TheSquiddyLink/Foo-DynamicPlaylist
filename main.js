@@ -13,6 +13,11 @@ const server = http.createServer((req, res) => {
         getPlaylist(req, res);
         return;
     }
+
+    if(req.url == "/playlistStatus"){
+        getPlaylistStatus(req, res);
+        return;
+    }
     fs.readFile(filePath, (err, data) => {
         if (err) {
             res.writeHead(500, { 'Content-Type': 'text/plain' });
@@ -144,6 +149,10 @@ function getSongPath(data,i){
     return data.folder + "/" + data.files[i];
 }
 
+var playlistStatus = {
+    status: "inactive",
+    percentage: 0
+}
 /**
  * 
  * @param {PlaylistData} playlist 
@@ -155,11 +164,15 @@ async function getAllSongData(playlist){
         files: []
     }
 
+    playlistStatus.status = "processing";
+    playlistStatus.percentage = 0;
+
     const startTime = Date.now();
     for(let i = 0; i < playlist.files.length; i++){
         let song = await getSongData(getSongPath(playlist, i));
         if(song){
             result.files.push(song);
+            playlistStatus.percentage = Math.round((i + 1) / playlist.files.length * 100);
         }
     }
     const endTime = Date.now();
@@ -168,4 +181,9 @@ async function getAllSongData(playlist){
 
     return result;
 
+}
+
+function getPlaylistStatus(req, res) {
+   res.writeHead(200, { 'Content-Type': 'text/json' });
+   res.end(JSON.stringify(playlistStatus, null, 2));
 }
