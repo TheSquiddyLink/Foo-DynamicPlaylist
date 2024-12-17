@@ -1,5 +1,14 @@
 console.log("Hello World")
 document.getElementById("form").addEventListener("submit", submitForm);
+document.getElementById("browse").addEventListener("click", browse);
+
+async function browse(event){
+    event.preventDefault();
+    var path = await fetch('/promptFileInput');
+    var result = await path.text();
+    document.getElementById("playlist").value = result;
+}
+
 
 async function submitForm(event) {
 

@@ -4,6 +4,7 @@ import path from 'path';
 import formidable from 'formidable'
 import { parseFile } from 'music-metadata'
 import NodeID3 from 'node-id3';
+import { spawn } from "child_process"
 
 const folder =  "./website"
 
@@ -14,6 +15,11 @@ const server = http.createServer((req, res) => {
     console.log(req.url);
     if(req.url == "/getPlaylist"){
         getPlaylist(req, res);
+        return;
+    }
+
+    if(req.url == "/promptFileInput"){
+        promptFileInput(req, res);
         return;
     }
 
@@ -291,3 +297,18 @@ function setSong(req, res) {
         console.log(song);
     })
 }
+
+/**
+ * 
+ * @param {http.IncomingMessage} req 
+ * @param {http.ServerResponse<http.IncomingMessage>} res 
+ */
+function promptFileInput(req, res) {
+    let psScript = fs.readFileSync("fileInput.ps1", "utf8");
+    var child = spawn("powershell.exe", ["-Command", psScript]);
+    child.stdout.on("data", (data) => {
+        res.writeHead(200, { 'Content-Type': 'text/plain' });
+        res.end(data);
+        child.kill();
+    });
+}  
