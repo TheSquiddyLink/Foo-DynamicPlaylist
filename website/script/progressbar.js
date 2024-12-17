@@ -13,6 +13,8 @@ async function browse(event){
 async function submitForm(event) {
 
     event.preventDefault();
+
+    document.getElementById("formSubmit").disabled = true;
     const formData = new FormData(document.getElementById("form"));
 
     document.querySelector(".progressStats").classList.remove("hidden");
@@ -28,6 +30,7 @@ async function submitForm(event) {
         console.log('Success:', data);
         document.getElementById("result").innerHTML = JSON.stringify(data, null, 2);
         processing = false;
+        document.getElementById("formSubmit").disabled = false;
     })
     .catch((error) => {
         console.error('Error:', error);
