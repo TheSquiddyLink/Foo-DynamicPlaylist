@@ -1,10 +1,11 @@
 import http, { get } from 'http';
 import fs from 'fs';
 import path from 'path';
-import formidable from 'formidable'
-import { parseFile } from 'music-metadata'
+import formidable from 'formidable';
+import { parseFile } from 'music-metadata';
 import NodeID3 from 'node-id3';
-import { spawn } from "child_process"
+import { spawn } from "child_process";
+import open from 'open';
 
 const folder =  "./website"
 
@@ -94,6 +95,7 @@ const server = http.createServer((req, res) => {
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
+    open(`http://localhost:${PORT}`);
 });
 
 /**

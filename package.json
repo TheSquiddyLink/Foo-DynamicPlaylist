@@ -15,6 +15,7 @@
     "http": "^0.0.1-security",
     "music-metadata": "^10.6.4",
     "node-id3": "^0.2.6",
+    "open": "^10.1.0",
     "path": "^0.12.7"
   }
 }
