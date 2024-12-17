@@ -1,8 +1,13 @@
 async function displaySong(index){
     const data = await (await fetch(`/getSongData-${index}`)).json();
-    document.getElementById("title").innerHTML = data.title;
-    document.getElementById("artist").innerHTML = data.artist;
-    document.getElementById("album").innerHTML = data.album;
+    document.getElementById("title").innerHTML = data.tags.title;
+    document.getElementById("artist").innerHTML = data.tags.artist;
+    document.getElementById("album").innerHTML = data.tags.album;
+
+    document.getElementById("timeOfDayMorning").checked = data.tags.custom.timeOfDay[0];
+    document.getElementById("timeOfDayDay").checked = data.tags.custom.timeOfDay[1];
+    document.getElementById("timeOfDayEvening").checked = data.tags.custom.timeOfDay[2];
+    document.getElementById("timeOfDayNight").checked = data.tags.custom.timeOfDay[3];
     document.getElementById("currentIndexInput").value = index;
 }
 

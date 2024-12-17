@@ -55,12 +55,15 @@ const server = http.createServer((req, res) => {
         var index = req.url.split("-")[1];
         res.writeHead(200, { 'Content-Type': 'application/json' });
         if(!playlistData){
+            console.error("Playlist not loaded");
             res.end("{}");
         }
         else if(Number(index) >= playlistData.files.length) {
+            console.error("Index out of range");
             res.end("{}");
         }
         else {
+            console.log("Getting song data for index: " + index);
             var data = playlistData.files[Number(index)]
         
             res.end(JSON.stringify(data));
@@ -175,28 +178,13 @@ function formatPath(pathStr){
 
 async function getSongData(songPath){
     if(!songPath) return;
-    if(!songPath.includes(".mp3")) return {
-        title: "Invalid File Type",
-        artist: songPath,
-        album: "",
-    };
-
+    if(!songPath.includes(".mp3")) return Song.invalid(songPath, "Invalid file extension");
     try {
         const metadata = await parseFile(songPath);
-        return {
-            title: metadata.common.title,
-            artist: metadata.common.artist,
-            album: metadata.common.album,
-            path: songPath
-        }
+        return Song.fromNodeID3(metadata);
     } catch (err) {
         console.error('Error:', err.message);
-        return {
-            title: "Unknown",
-            artist: "Unknown",
-            album: "Unknown",
-            path: songPath
-        }
+        return Song.invalid(songPath, "Unknown error");
     }
 }
 
@@ -350,4 +338,49 @@ function stopPlaylist(req, res){
     playlistStatus.toDefault();
     res.writeHead(200, { 'Content-Type': 'text/plain' });
     res.end("Playlist Stopped");
+}
+
+class Tags {
+    constructor() {
+        this.artist = "";
+        this.album = "";
+        this.title = "";
+        this.custom = {
+            timeOfDay: [false, false, false, false],
+            temp: 0
+        }
+    }
+}
+
+class Song {
+    path = ""
+    tags = new Tags();
+
+    constructor(path, artist, album, title, morning=false, day=false, evening=false, night=false, temp=0) {
+        this.path = path;
+        this.tags.artist = artist;
+        this.tags.album = album;
+        this.tags.title = title;
+        this.tags.custom.timeOfDay = [morning, day, evening, night];
+        this.tags.custom.temp = temp;
+        console.log(this)
+    }
+
+    static invalid(path, reason){
+        return new Song(path, reason, path, "");
+    }
+    static fromNodeID3(nodeID3) {
+        const tags = nodeID3.common;
+
+        const customTags = nodeID3.native["ID3v2.3"];
+        console.log(customTags);
+        const song = new Song(nodeID3.path, tags.artist, tags.album, tags.title, this.getCustomTag(customTags,"MORNING") , this.getCustomTag(customTags,"DAY"), this.getCustomTag(customTags,"EVENING"),this.getCustomTag(customTags,"NIGHT"), this.getCustomTag(customTags,"TEMP"));
+        return song;
+    }
+
+    static getCustomTag(native, id){
+        const tag = native.find(tag => tag.id === `TXXX:SQUIBS_${id}`)
+        if(tag) return tag.value === "true";
+        return false;
+    }
 }
