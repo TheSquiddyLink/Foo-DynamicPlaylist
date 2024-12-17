@@ -2,7 +2,7 @@
   "name": "foo-dynamicplaylist",
   "version": "1.0.0",
   "description": "",
-  "main": "main.js",
+  "main": "app.js",
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "electron": "^33.2.1",
     "formidable": "^3.5.2",
     "fs": "^0.0.1-security",
     "http": "^0.0.1-security",

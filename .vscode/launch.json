@@ -13,6 +13,21 @@
                 "<node_internals>/**"
             ],
             "program": "${workspaceFolder}\\main.js"
-        }
+        },
+         
+        {
+            "name": "Electron: Main Process",
+            "type": "node",
+            "request": "launch",
+            "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",  // Electron executable
+            "args": [
+              "${workspaceFolder}/app.js"  // Path to your Electron main file
+            ],
+            "outputCapture": "std",
+            "env": {
+              "NODE_ENV": "development"
+            },
+            "skipFiles": ["<node_internals>/**"]
+          },
     ]
 }
