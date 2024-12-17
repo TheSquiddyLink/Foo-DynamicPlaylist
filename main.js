@@ -175,6 +175,12 @@ function formatPath(pathStr){
 
 async function getSongData(songPath){
     if(!songPath) return;
+    if(!songPath.includes(".mp3")) return {
+        title: "Invalid File Type",
+        artist: songPath,
+        album: "",
+    };
+
     try {
         const metadata = await parseFile(songPath);
         return {
@@ -289,33 +295,37 @@ function setSong(req, res) {
         const timeOfDay = fields.timeOfDay;
         const temp = fields.temp[0];
 
-
-        NodeID3.update({
-            TXXX: [
-                //TODO: Change to class/object relation
-                {
-                    description: "SQUIBS_MORNING",
-                    value: timeOfDay.includes("morning") ? "true" : "false"
-                },
-                {
-                    description: "SQUIBS_DAY",
-                    value: timeOfDay.includes("day") ? "true" : "false"
-                },
-                {
-                    description: "SQUIBS_EVENING",
-                    value: timeOfDay.includes("evening") ? "true" : "false"
-                },
-                {
-                    description: "SQUIBS_NIGHT",
-                    value: timeOfDay.includes("night") ? "true" : "false"
-                },
-                {
-                    description: "SQUIBS_TEMP",
-                    value: temp
-                }
-            ] 
-            }, song.path);
-        console.log(song);
+        if(song.path.includes(".mp3")){
+            NodeID3.update({
+                TXXX: [
+                    //TODO: Change to class/object relation
+                    {
+                        description: "SQUIBS_MORNING",
+                        value: timeOfDay.includes("morning") ? "true" : "false"
+                    },
+                    {
+                        description: "SQUIBS_DAY",
+                        value: timeOfDay.includes("day") ? "true" : "false"
+                    },
+                    {
+                        description: "SQUIBS_EVENING",
+                        value: timeOfDay.includes("evening") ? "true" : "false"
+                    },
+                    {
+                        description: "SQUIBS_NIGHT",
+                        value: timeOfDay.includes("night") ? "true" : "false"
+                    },
+                    {
+                        description: "SQUIBS_TEMP",
+                        value: temp
+                    }
+                ] 
+                }, song.path);
+            console.log(song);
+        } else {
+            console.log("Not an mp3 file");
+        }
+       
     })
 }
 
