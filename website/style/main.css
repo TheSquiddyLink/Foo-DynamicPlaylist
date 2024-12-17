@@ -1,3 +1,7 @@
+body {
+    margin: 20px
+}
+
 .progressContainer {
     height: 20px;
     background-color: #e0e0e0;
@@ -13,9 +17,6 @@
     transition: width 0.5s ease-in-out;
 }
 
-.progressStats > div {
-    margin: 10px;
-}
 .progressStats > div > * {
     display: inline;
 }
