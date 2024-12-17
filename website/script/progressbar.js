@@ -1,6 +1,7 @@
 console.log("Hello World")
 document.getElementById("form").addEventListener("submit", submitForm);
 document.getElementById("browse").addEventListener("click", browse);
+document.getElementById("stop").addEventListener("click", stop);
 
 async function browse(event){
     event.preventDefault();
@@ -9,12 +10,19 @@ async function browse(event){
     document.getElementById("playlist").value = result;
 }
 
+function stop(event){
+    event.preventDefault();
+    fetch('/stopPlaylist');
+}
+
 
 async function submitForm(event) {
 
     event.preventDefault();
 
     document.getElementById("formSubmit").disabled = true;
+    document.getElementById("stop").disabled = false;
+
     const formData = new FormData(document.getElementById("form"));
 
     document.querySelector(".progressStats").classList.remove("hidden");
@@ -31,6 +39,7 @@ async function submitForm(event) {
         document.getElementById("result").innerHTML = JSON.stringify(data, null, 2);
         processing = false;
         document.getElementById("formSubmit").disabled = false;
+        document.getElementById("stop").disabled = true;
     })
     .catch((error) => {
         console.error('Error:', error);

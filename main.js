@@ -28,9 +28,16 @@ const server = http.createServer((req, res) => {
         return;
     }
 
+    if(req.url == "/stopPlaylist"){
+        stopPlaylist(req, res);
+        return;
+    }
     if(req.url == "/getTotal"){
         res.writeHead(200, { 'Content-Type': 'text/plain' });
-        if(playlistData.files){
+        if(!playlistData){
+            res.end("0");
+        }
+        else if(playlistData.files){
             res.end(playlistData.files.length.toString());
         }else {
             res.end("0");
@@ -44,14 +51,20 @@ const server = http.createServer((req, res) => {
     }
 
     if(req.url.includes("/getSongData")){
+
         var index = req.url.split("-")[1];
         res.writeHead(200, { 'Content-Type': 'application/json' });
-        if(Number(index) >= playlistData.files.length) {
+        if(!playlistData){
             res.end("{}");
         }
-        var data = playlistData.files[Number(index)]
+        else if(Number(index) >= playlistData.files.length) {
+            res.end("{}");
+        }
+        else {
+            var data = playlistData.files[Number(index)]
         
-        res.end(JSON.stringify(data));
+            res.end(JSON.stringify(data));
+        }
         return;
     }
     if(req.url.includes(".css") || req.url.includes(".js")){
@@ -229,18 +242,26 @@ async function getAllSongData(playlist){
     var length = playlist.files.length;
     playlistStatus.total = length;
     playlistStatus.remaining = length;
-    for(let i = 0; i < length; i++){
-        let song = await getSongData(getSongPath(playlist, i));
-        if(song){
-            result.files.push(song);
-        }else {
-            console.log("Song Failed")
-            playlistStatus.failed++;
+    try {
+        for(let i = 0; i < length; i++){
+            if(playlistStatus.status != "processing") break;
+            let song = await getSongData(getSongPath(playlist, i));
+            if(song){
+                result.files.push(song);
+            }else {
+                console.log("Song Failed")
+                playlistStatus.failed++;
+            }
+            playlistStatus.percentage = (i + 1) / length * 100;
+            playlistStatus.remaining--;
+            playlistStatus.elapsed = Date.now() - startTime;
         }
-        playlistStatus.percentage = (i + 1) / length * 100;
-        playlistStatus.remaining--;
-        playlistStatus.elapsed = Date.now() - startTime;
+    } catch (err) {
+        console.error("Error getting song data:", err);
+        playlistStatus.toDefault();
+        return;
     }
+   
     const endTime = Date.now();
     const duration = endTime - startTime;
     result.elapsed = duration;
@@ -312,3 +333,11 @@ function promptFileInput(req, res) {
         child.kill();
     });
 }  
+
+
+function stopPlaylist(req, res){
+    console.log("Stopping playlist");
+    playlistStatus.toDefault();
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
+    res.end("Playlist Stopped");
+}
