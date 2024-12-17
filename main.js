@@ -14,6 +14,7 @@ var playlistData;
 const server = http.createServer((req, res) => {
     const filePath = path.join(folder, 'index.html');
     console.log(req.url);
+
     if(req.url == "/getPlaylist"){
         getPlaylist(req, res, false);
         return;

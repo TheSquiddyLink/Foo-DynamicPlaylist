@@ -1,3 +1,5 @@
+import { sendMessage, onMessage, CHANNELS} from "./electron.js";
+
 console.log("Hello World")
 document.getElementById("form").addEventListener("submit", submitForm);
 document.getElementById("browse").addEventListener("click", browse);
@@ -5,10 +7,14 @@ document.getElementById("stop").addEventListener("click", stop);
 
 async function browse(event){
     event.preventDefault();
-    var path = await fetch('/promptFileInput');
-    var result = await path.text();
-    document.getElementById("playlist").value = result;
+    sendMessage(CHANNELS.promptFileInput.send);
 }
+
+onMessage(CHANNELS.promptFileInput.reply, (event, arg) => {
+    console.log("Got reply");
+    console.log(arg);
+    document.getElementById("playlist").value = arg;
+});
 
 function stop(event){
     event.preventDefault();
