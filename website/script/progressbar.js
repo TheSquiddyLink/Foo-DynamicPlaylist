@@ -28,8 +28,9 @@ async function submitForm(event) {
     document.querySelector(".progressStats").classList.remove("hidden");
     
     var processing = true;
-
-    fetch('/getPlaylist', {
+    var hideErrors = document.getElementById("hideErrors").checked;
+    console.log(hideErrors);
+    fetch(hideErrors ? '/getPlaylistHE': '/getPlaylist', {
         method: 'POST',
         body: formData
     })
@@ -56,6 +57,10 @@ async function submitForm(event) {
     document.getElementById("currentIndex").innerHTML = 1;
     document.getElementById("totalSize").innerHTML = await (await fetch("/getTotal")).text();
     document.getElementById("songDataForm").classList.remove("hidden");
+    if(document.getElementById("totalSize").innerHTML == "0") {
+        alert("No songs in playlist");
+        return;
+    }
     displaySong(0)
 }
 

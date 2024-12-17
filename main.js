@@ -14,7 +14,11 @@ const server = http.createServer((req, res) => {
     const filePath = path.join(folder, 'index.html');
     console.log(req.url);
     if(req.url == "/getPlaylist"){
-        getPlaylist(req, res);
+        getPlaylist(req, res, false);
+        return;
+    }
+    if(req.url == "/getPlaylistHE"){
+        getPlaylist(req, res, true);
         return;
     }
 
@@ -96,14 +100,15 @@ server.listen(PORT, () => {
  * 
  * @param {http.IncomingMessage} req 
  * @param {http.ServerResponse<http.IncomingMessage>} res 
+ * @param {boolean} hideErrors
  */
-async function getPlaylist(req, res) {
+async function getPlaylist(req, res, hideErrors) {
     try {
         const rawData = await getPlaylistData(req);
         console.log("Done");
         console.log(rawData);
 
-        const allSongsData = await getAllSongData(rawData);
+        const allSongsData = await getAllSongData(rawData, hideErrors);
         playlistData = allSongsData;
         res.writeHead(200, { 'Content-Type': 'text/json' });
         res.end(JSON.stringify(allSongsData, null, 2));
@@ -219,8 +224,9 @@ var playlistStatus = {
 /**
  * 
  * @param {PlaylistData} playlist 
+ * @param {boolean} hideErrors
  */
-async function getAllSongData(playlist){
+async function getAllSongData(playlist, hideErrors){
     if(playlistStatus.status == "processing") return;
     playlistStatus.toDefault();
     const result = {
@@ -240,12 +246,17 @@ async function getAllSongData(playlist){
         for(let i = 0; i < length; i++){
             if(playlistStatus.status != "processing") break;
             let song = await getSongData(getSongPath(playlist, i));
-            if(song){
+            if(!song){
+                console.log("No Song")
+            } else if(song.isValid){
+                console.log("Song Valid")
                 result.files.push(song);
-            }else {
+            } else {
                 console.log("Song Failed")
                 playlistStatus.failed++;
+                if(!hideErrors) result.files.push(song);
             }
+
             playlistStatus.percentage = (i + 1) / length * 100;
             playlistStatus.remaining--;
             playlistStatus.elapsed = Date.now() - startTime;
@@ -355,6 +366,7 @@ class Tags {
 class Song {
     path = ""
     tags = new Tags();
+    isValid = true;
 
     constructor(path, artist, album, title, morning=false, day=false, evening=false, night=false, temp=0) {
         this.path = path;
@@ -367,7 +379,9 @@ class Song {
     }
 
     static invalid(path, reason){
-        return new Song(path, reason, path, "");
+        const song = new Song(path, reason, path, "")
+        song.isValid = false;
+        return song;
     }
     static fromNodeID3(nodeID3) {
         const tags = nodeID3.common;

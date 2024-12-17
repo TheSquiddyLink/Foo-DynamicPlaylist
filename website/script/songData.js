@@ -1,5 +1,6 @@
 async function displaySong(index){
     const data = await (await fetch(`/getSongData-${index}`)).json();
+
     document.getElementById("title").innerHTML = data.tags.title;
     document.getElementById("artist").innerHTML = data.tags.artist;
     document.getElementById("album").innerHTML = data.tags.album;
@@ -26,9 +27,11 @@ async function changeSong(event, direction) {
         currentElement.innerHTML = 1;
     }
 
-    console.log(totalElement.innerHTML);
-    
-    if(direction === 'next' && Number(currentElement.innerHTML) >= Number(totalElement.innerHTML)) {
+    console.log("Total Element",totalElement.innerHTML);
+    if(totalElement.innerHTML == "0" || totalElement.innerHTML == "?") {
+        alert("No songs in playlist");
+    }
+    else if(direction === 'next' && Number(currentElement.innerHTML) >= Number(totalElement.innerHTML)) {
         currentElement.innerHTML = 1;
         displaySong(currentElement.innerHTML - 1);
     } else if (direction === 'prev' && Number(currentElement.innerHTML) <= 1) {
