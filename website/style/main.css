@@ -43,7 +43,7 @@ header > * {
 }
 
 
-.hidden {
+.hidden, .hidden * {
     display: none;
 }
 
