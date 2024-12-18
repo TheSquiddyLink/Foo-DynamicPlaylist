@@ -24,6 +24,7 @@ export const CHANNELS = {
     playlistStatus: new Channel('playlistStatus'),
     stopPlaylist: new Channel('stopPlaylist'),
     setSong: new Channel('setSong'),
+    openLink: new Channel('openLink'),
 };
 
 /**

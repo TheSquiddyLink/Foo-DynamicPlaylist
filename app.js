@@ -5,9 +5,13 @@ import { CHANNELS } from './website/script/electron.js';
 import fs from 'fs';
 import { parseFile } from 'music-metadata';
 import NodeID3 from 'node-id3';
+import hotReload from './hotReload.cjs';
+import { shell } from 'electron';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+
+hotReload();
 
 function createWindow () {
   const win = new BrowserWindow({
@@ -37,6 +41,16 @@ app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit()
   }
+})
+
+ipcMain.on(CHANNELS.openLink.send, (event, arg) => {
+    console.log("Opening link:", arg);
+    const link = arg;
+    if (link.startsWith("http")) {
+        shell.openExternal(link);
+    } else {
+        console.log("Invalid link:", link);
+    }
 })
 
 ipcMain.on(CHANNELS.promptFileInput.send, async (event, arg) => {
