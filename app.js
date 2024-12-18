@@ -4,6 +4,7 @@ import { fileURLToPath } from 'url';
 import { CHANNELS } from './website/script/electron.js';
 import fs from 'fs';
 import { parseFile } from 'music-metadata';
+import NodeID3 from 'node-id3';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -82,6 +83,49 @@ ipcMain.on(CHANNELS.playlistStatus.send, async (event, arg) => {
 ipcMain.on(CHANNELS.stopPlaylist.send, async () => {
     playlistStatus.toDefault();
 })
+
+ipcMain.on(CHANNELS.setSong.send, async (event, arg) => {
+    console.log("Setting song");
+    setSong(event, arg);
+})
+
+function setSong(event, arg) {
+    const index = arg.index;
+    const song = playlistData.files[index];
+    const timeOfDay = arg.timeOfDay;
+    const temp = arg.temp;
+
+    if(song.path.includes(".mp3")){
+        NodeID3.update({
+            TXXX: [
+                //TODO: Change to class/object relation
+                {
+                    description: "SQUIBS_MORNING",
+                    value: timeOfDay.includes("morning") ? "true" : "false"
+                },
+                {
+                    description: "SQUIBS_DAY",
+                    value: timeOfDay.includes("day") ? "true" : "false"
+                },
+                {
+                    description: "SQUIBS_EVENING",
+                    value: timeOfDay.includes("evening") ? "true" : "false"
+                },
+                {
+                    description: "SQUIBS_NIGHT",
+                    value: timeOfDay.includes("night") ? "true" : "false"
+                },
+                {
+                    description: "SQUIBS_TEMP",
+                    value: temp
+                }
+            ] 
+            }, song.path);
+        console.log(song);
+    } else {
+        console.log("Not an mp3 file");
+    }
+}
 
 function getSongDataIndex(event,index){
     if(!playlistData){
@@ -207,7 +251,7 @@ async function getSongData(songPath){
     if(!songPath.includes(".mp3")) return Song.invalid(songPath, "Invalid file extension");
     try {
         const metadata = await parseFile(songPath);
-        return Song.fromNodeID3(metadata);
+        return Song.fromNodeID3(metadata, songPath);
     } catch (err) {
         console.error('Error:', err.message);
         return Song.invalid(songPath, "Unknown error");
@@ -234,12 +278,12 @@ class Song {
         song.isValid = false;
         return song;
     }
-    static fromNodeID3(nodeID3) {
+    static fromNodeID3(nodeID3, path) {
         const tags = nodeID3.common;
 
         const customTags = nodeID3.native["ID3v2.3"];
         console.log(customTags);
-        const song = new Song(nodeID3.path, tags.artist, tags.album, tags.title, this.getCustomTag(customTags,"MORNING") , this.getCustomTag(customTags,"DAY"), this.getCustomTag(customTags,"EVENING"),this.getCustomTag(customTags,"NIGHT"), this.getCustomTag(customTags,"TEMP"));
+        const song = new Song(path, tags.artist, tags.album, tags.title, this.getCustomTag(customTags,"MORNING") , this.getCustomTag(customTags,"DAY"), this.getCustomTag(customTags,"EVENING"),this.getCustomTag(customTags,"NIGHT"), this.getCustomTag(customTags,"TEMP"));
         return song;
     }
 

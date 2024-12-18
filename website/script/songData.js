@@ -62,11 +62,25 @@ async function changeSong(event, direction) {
 
 function submitTags(event){
     event.preventDefault();
-    const formData = new FormData(document.getElementById("songDataForm"));
-    fetch('/setSong', {
-        method: 'POST',
-        body: formData
-    })
+    
+    const timeOfDay = [
+        document.getElementById("timeOfDayMorning").checked,
+        document.getElementById("timeOfDayDay").checked,
+        document.getElementById("timeOfDayEvening").checked,
+        document.getElementById("timeOfDayNight").checked
+    ];
+    
+    const index = Number(document.getElementById("currentIndex").innerHTML)-1;
+
+    const temp = document.getElementById("temp").value;
+
+    const formData ={
+        index: index,
+        timeOfDay: timeOfDay,
+        temp: temp
+    }
+
+    sendMessage(CHANNELS.setSong.send, formData);
 }
 
 document.getElementById("next").addEventListener("click", (event) => changeSong(event, 'next'));

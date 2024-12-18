@@ -23,6 +23,7 @@ export const CHANNELS = {
     getTotal: new Channel('getTotal'),
     playlistStatus: new Channel('playlistStatus'),
     stopPlaylist: new Channel('stopPlaylist'),
+    setSong: new Channel('setSong'),
 };
 
 /**
