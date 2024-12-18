@@ -16,11 +16,19 @@ onMessage(CHANNELS.promptFileInput.reply, (event, arg) => {
     document.getElementById("playlist").value = arg;
 });
 
+
+
 function stop(event){
     event.preventDefault();
     fetch('/stopPlaylist');
 }
 
+onMessage(CHANNELS.getPlaylist.reply, (event, args) => {
+    console.log('Success:', args);
+    document.getElementById("result").innerHTML = JSON.stringify(args, null, 2);
+    document.getElementById("formSubmit").disabled = false;
+    document.getElementById("stop").disabled = true;
+})
 
 async function submitForm(event) {
 
@@ -36,10 +44,10 @@ async function submitForm(event) {
     var processing = true;
     var hideErrors = document.getElementById("hideErrors").checked;
     console.log(hideErrors);
-    fetch(hideErrors ? '/getPlaylistHE': '/getPlaylist', {
-        method: 'POST',
-        body: formData
-    })
+    sendMessage(CHANNELS[hideErrors ? 'getPlaylistHE': 'getPlaylist'].send, document.getElementById("playlist").value);
+
+
+    /*
     .then(response => response.json())
     .then(data => {
         console.log('Success:', data);
@@ -68,6 +76,7 @@ async function submitForm(event) {
         return;
     }
     displaySong(0)
+    */
 }
 
 async function updateData(){

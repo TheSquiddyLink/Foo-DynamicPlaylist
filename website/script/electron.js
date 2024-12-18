@@ -1,4 +1,3 @@
-
 export class Channel {
     constructor(sendChannel) {
         this.send = sendChannel;
@@ -7,7 +6,7 @@ export class Channel {
 }
 
 // Channels:
-// [ ] getPlaylist 
+// [X] getPlaylist 
 // [ ] getPlaylistHE
 // [X] promptFileInput
 // [ ] setSong
@@ -18,6 +17,7 @@ export class Channel {
 
 export const CHANNELS = {
     promptFileInput: new Channel('promptFileInput'),
+    getPlaylist: new Channel('getPlaylist'),
 };
 
 export function sendMessage(channel, data) {
