@@ -15,17 +15,21 @@ const packageJSON = JSON.parse(fs.readFileSync(join(__dirname, 'package.json'), 
 hotReload();
 
 function createWindow () {
+    var development = process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true';
   const win = new BrowserWindow({
     width: 800,
     height: 600,
     webPreferences: {
       preload: join(__dirname, 'preload.js'),
-      nodeIntegration: false
+      nodeIntegration: false,
+      devTools: development,
     }
   })
 
   win.loadFile('website/index.html')
-  win.webContents.openDevTools();
+    if (development) {
+        win.webContents.openDevTools()
+    }
 }
 
 app.whenReady().then(() => {
