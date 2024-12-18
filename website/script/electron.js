@@ -7,18 +7,19 @@ export class Channel {
 
 // Channels:
 // [X] getPlaylist 
-// [ ] getPlaylistHE
+// [X] getPlaylistHE
 // [X] promptFileInput
 // [ ] setSong
 // [ ] stopPlaylist
 // [ ] getTotal
 // [ ] playlistStatus
-// [ ] getSongData
+// [X] getSongData
 
 export const CHANNELS = {
     promptFileInput: new Channel('promptFileInput'),
     getPlaylist: new Channel('getPlaylist'),
     getPlaylistHE: new Channel('getPlaylistHE'),
+    getSongData: new Channel('getSongData'),
 };
 
 export function sendMessage(channel, data) {

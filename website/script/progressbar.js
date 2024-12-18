@@ -1,4 +1,5 @@
 import { sendMessage, onMessage, CHANNELS} from "./electron.js";
+import { displaySong } from "./songData.js";
 
 console.log("Hello World")
 document.getElementById("form").addEventListener("submit", submitForm);
@@ -28,6 +29,8 @@ onMessage(CHANNELS.getPlaylist.reply, (event, args) => {
     document.getElementById("result").innerHTML = JSON.stringify(args, null, 2);
     document.getElementById("formSubmit").disabled = false;
     document.getElementById("stop").disabled = true;
+    document.getElementById("songDataForm").classList.remove("hidden");
+    displaySong(0);
 })
 
 async function submitForm(event) {

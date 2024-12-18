@@ -62,12 +62,36 @@ ipcMain.on(CHANNELS.getPlaylistHE.send, async (event, arg) => {
 })
 
 
+ipcMain.on(CHANNELS.getSongData.send, async (event, arg) => {
+    console.log("Getting song data");
+    getSongDataIndex(event, arg);
+
+})
+
+
+function getSongDataIndex(event,index){
+    if(!playlistData){
+        console.error("Playlist not loaded");
+        event.reply(CHANNELS.getSongData.reply, "{}");
+    }
+    else if(Number(index) >= playlistData.files.length) {
+        console.error("Index out of range");
+        event.reply(CHANNELS.getSongData.reply, "{}");
+    }
+    else {
+        console.log("Getting song data for index: " + index);
+        var data = playlistData.files[Number(index)]
+        playlistData.index = Number(index);
+        event.reply(CHANNELS.getSongData.reply, data);
+    }
+}
 async function getPlaylist(playlist, event, hideErrors){
     try {
         const data = fs.readFileSync(playlist, 'utf8');
         console.log(data);
-        const playlistData = formatPlaylistData(data, playlist);
-        const allSongsData = await getAllSongData(playlistData, hideErrors);
+        const rawData = formatPlaylistData(data, playlist);
+        const allSongsData = await getAllSongData(rawData, hideErrors);
+        playlistData = allSongsData;
         event.reply(CHANNELS.getPlaylist.reply, allSongsData);
     } catch (err) {
         console.log(err)

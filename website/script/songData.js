@@ -1,8 +1,14 @@
+import { CHANNELS, onMessage, sendMessage } from "./electron.js";
 
 
-async function displaySong(index){
-    const data = await (await fetch(`/getSongData-${index}`)).json();
+export async function displaySong(index){
+    console.log("Displaying song: " + index);
+    sendMessage(CHANNELS.getSongData.send, index);
+}
 
+onMessage(CHANNELS.getSongData.reply, (event, arg) => {
+    console.log("Got song data");
+    const data = arg;
     document.getElementById("title").innerHTML = data.tags.title;
     document.getElementById("artist").innerHTML = data.tags.artist;
     document.getElementById("album").innerHTML = data.tags.album;
@@ -11,8 +17,8 @@ async function displaySong(index){
     document.getElementById("timeOfDayDay").checked = data.tags.custom.timeOfDay[1];
     document.getElementById("timeOfDayEvening").checked = data.tags.custom.timeOfDay[2];
     document.getElementById("timeOfDayNight").checked = data.tags.custom.timeOfDay[3];
-    document.getElementById("currentIndexInput").value = index;
-}
+    document.getElementById("currentIndexInput").value = data.index;
+})
 
 
 async function changeSong(event, direction) {
