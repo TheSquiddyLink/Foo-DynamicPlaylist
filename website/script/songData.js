@@ -8,6 +8,7 @@ export async function displaySong(index){
 
 onMessage(CHANNELS.getSongData.reply, (event, arg) => {
     console.log("Got song data");
+    console.log(arg);
     const data = arg;
     document.getElementById("title").innerHTML = data.tags.title;
     document.getElementById("artist").innerHTML = data.tags.artist;
@@ -17,6 +18,7 @@ onMessage(CHANNELS.getSongData.reply, (event, arg) => {
     document.getElementById("timeOfDayDay").checked = data.tags.custom.timeOfDay[1];
     document.getElementById("timeOfDayEvening").checked = data.tags.custom.timeOfDay[2];
     document.getElementById("timeOfDayNight").checked = data.tags.custom.timeOfDay[3];
+    document.getElementById("temp").value = data.tags.custom.temp;
     document.getElementById("currentIndexInput").value = data.index;
 })
 

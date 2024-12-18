@@ -7,6 +7,7 @@ import { parseFile } from 'music-metadata';
 import NodeID3 from 'node-id3';
 import hotReload from './hotReload.cjs';
 import { shell } from 'electron';
+import { get } from 'node:http';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -115,23 +116,23 @@ function setSong(event, arg) {
                 //TODO: Change to class/object relation
                 {
                     description: "SQUIBS_MORNING",
-                    value: timeOfDay.includes("morning") ? "true" : "false"
+                    value: String(timeOfDay[0])
                 },
                 {
                     description: "SQUIBS_DAY",
-                    value: timeOfDay.includes("day") ? "true" : "false"
+                    value: String(timeOfDay[1])
                 },
                 {
                     description: "SQUIBS_EVENING",
-                    value: timeOfDay.includes("evening") ? "true" : "false"
+                    value: String(timeOfDay[2])
                 },
                 {
                     description: "SQUIBS_NIGHT",
-                    value: timeOfDay.includes("night") ? "true" : "false"
+                    value: String(timeOfDay[3])
                 },
                 {
                     description: "SQUIBS_TEMP",
-                    value: temp
+                    value: String(temp)
                 }
             ] 
             }, song.path);
@@ -297,13 +298,15 @@ class Song {
 
         const customTags = nodeID3.native["ID3v2.3"];
         console.log(customTags);
-        const song = new Song(path, tags.artist, tags.album, tags.title, this.getCustomTag(customTags,"MORNING") , this.getCustomTag(customTags,"DAY"), this.getCustomTag(customTags,"EVENING"),this.getCustomTag(customTags,"NIGHT"), this.getCustomTag(customTags,"TEMP"));
+        const song = new Song(path, tags.artist, tags.album, tags.title, this.getCustomBoolTag(customTags,"MORNING") , this.getCustomBoolTag(customTags,"DAY"), this.getCustomBoolTag(customTags,"EVENING"),this.getCustomBoolTag(customTags,"NIGHT"), this.getCustomTag(customTags,"TEMP"));
         return song;
     }
-
+    static getCustomBoolTag(native, id){
+        return this.getCustomTag(native, id) === "true";
+    }
     static getCustomTag(native, id){
         const tag = native.find(tag => tag.id === `TXXX:SQUIBS_${id}`)
-        if(tag) return tag.value === "true";
+        if(tag) return tag.value
         return false;
     }
 }
