@@ -1,22 +1,36 @@
 {
   "name": "foo-dynamicplaylist",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "",
   "main": "app.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "node build.js"
   },
+  "build": 
+  {
+    "appName": "YourAppName",
+    "platform": "win32",
+    "arch": "x64",
+    "out": "dist",
+    "overwrite": true,
+    "icon": "assets/icon.ico",
+    "excludeFiles": [
+      "build.js"
+    ]
+  },  
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "electron": "^33.2.1",
-    "formidable": "^3.5.2",
     "fs": "^0.0.1-security",
     "http": "^0.0.1-security",
     "music-metadata": "^10.6.4",
     "node-id3": "^0.2.6",
     "open": "^10.1.0",
     "path": "^0.12.7"
+  },
+  "devDependencies": {
+    "electron": "^33.2.1",
+    "electron-packager": "^17.1.2"
   }
 }
