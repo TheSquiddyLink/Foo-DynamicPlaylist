@@ -11,7 +11,7 @@ import { get } from 'node:http';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-
+const packageJSON = JSON.parse(fs.readFileSync(join(__dirname, 'package.json'), 'utf8'));
 hotReload();
 
 function createWindow () {
@@ -104,6 +104,11 @@ ipcMain.on(CHANNELS.setSong.send, async (event, arg) => {
     setSong(event, arg);
 })
 
+
+ipcMain.on(CHANNELS.getVersion.send, async (event) => {
+    console.log("Getting version");
+    event.reply(CHANNELS.getVersion.reply, packageJSON.version);
+})
 function setSong(event, arg) {
     const index = arg.index;
     const song = playlistData.files[index];
