@@ -23,7 +23,7 @@
     </header>
     <form method="post" id="form">
         <button id="browse">Browse</button>
-        <input type="text" name="playlist" id="playlist" placeholder="c:path/to/file.m3u">
+        <input type="text" name="playlist" id="playlist" placeholder="c:path/to/file.m3u" required>
         <button type="submit" id="formSubmit">Start</button>
         <button id="stop" disabled>Stop</button>
         <label for="hideErrors">Hide Errors</label>
@@ -51,7 +51,7 @@
     </div>
 
     <form id="songDataForm" class="hidden">
-        <div>
+        <div class="data">
             <p>
                 Song: 
                 <span id="currentIndex">?</span>/
@@ -61,7 +61,7 @@
             <p id="album"></p>
             <p id="artist"></p>
         </div>
-        <div>
+        <div class="settings">
             <label for="timeOfDay">Time of Day</label>
             <div>
                 <label for="timeOfDayMorning">
@@ -77,14 +77,18 @@
                     <input type="checkbox" id="timeOfDayNight" name="timeOfDay" value="Night"> Night
                 </label>
             </div>
-            <input style="display: none;" id="currentIndexInput" name="currentIndex">
-            <label for="temp">Temperature</label>
-            <input type="number" id="temp" name="temp" placeholder="Temperature" min="0" max="100">
+            <div>
+                <input style="display: none;" id="currentIndexInput" name="currentIndex">
+                <label for="temp">Temperature</label>
+                <input type="number" id="temp" name="temp" placeholder="Temperature" min="0" max="100">
+            </div>
         </div>
-        <button type="submit" id="dataSubmit">Submit</button>
         <div>
-            <button id="prev">Prev</button>
-            <button id="next">Next</button>
+            <div class="navButtons">
+                <button id="prev">Prev</button>
+                <button type="submit" id="dataSubmit">Submit</button>
+                <button id="next">Next</button>
+            </div>
         </div>
     </form>
 

@@ -46,3 +46,42 @@ header > * {
 .hidden {
     display: none;
 }
+
+#form {
+    display: flex;
+    justify-content:  center;
+    margin-top: 20px;
+}
+
+#form > * {
+    margin: 10px;
+}
+
+
+#songDataForm {
+    display: flex;
+    flex-direction: column;
+}
+
+.navButtons {
+    display: flex;
+    justify-content: space-around;
+}
+
+
+#songDataForm > * {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    margin: 5px;
+}
+
+.data p {
+    margin-block-start: 0.5em;
+    margin-block-end: 0.5em;
+}
+
+.settings  * {
+    margin: 3px;
+}
