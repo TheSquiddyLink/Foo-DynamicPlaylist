@@ -5,32 +5,41 @@
   "main": "app.js",
   "type": "module",
   "scripts": {
-    "build": "node build.js"
+    "build": "electron-builder --win=nsis",
+    "build:portable": "electron-builder --win=portable"
   },
-  "build": 
-  {
-    "appName": "Foo-DynamicPlaylist",
-    "platform": "win32",
-    "arch": "x64",
-    "out": "dist",
-    "overwrite": true,
-    "icon": "assets/icon.ico",
-    "excludeFiles": [
-      "build.js"
-    ]
-  },  
+  "build": {
+    "appId": "com.yourcompany.app",
+    "productName": "YourAppName",
+    "files": [
+      "**/*",
+      "!**/node_modules/.cache/**"  
+    ],
+    "asarUnpack": [
+      "node_modules/node-id3/**"
+    ],
+    "mac": {
+      "category": "public.app-category.utilities",
+      "icon": "build/icons/icon.icns"
+    },
+    "win": {
+      "target": ["portable","nsis"],
+      "icon": "build/icons/icon.ico"
+    },
+    "linux": {
+      "icon": "build/icons/icon.png"
+    }
+  },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "fs": "^0.0.1-security",
-    "http": "^0.0.1-security",
     "music-metadata": "^10.6.4",
     "node-id3": "^0.2.6",
-    "open": "^10.1.0",
-    "path": "^0.12.7"
+    "open": "^10.1.0"
   },
   "devDependencies": {
     "electron": "^33.2.1",
+    "electron-builder": "^25.1.8",
     "electron-packager": "^17.1.2"
   }
 }

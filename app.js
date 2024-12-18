@@ -7,7 +7,6 @@ import { parseFile } from 'music-metadata';
 import NodeID3 from 'node-id3';
 import hotReload from './hotReload.cjs';
 import { shell } from 'electron';
-import { get } from 'node:http';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
