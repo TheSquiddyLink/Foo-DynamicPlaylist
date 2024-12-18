@@ -65,7 +65,11 @@ ipcMain.on(CHANNELS.getPlaylistHE.send, async (event, arg) => {
 ipcMain.on(CHANNELS.getSongData.send, async (event, arg) => {
     console.log("Getting song data");
     getSongDataIndex(event, arg);
+})
 
+ipcMain.on(CHANNELS.getTotal.send, async (event, arg) => {
+    console.log("Getting total");
+    event.reply(CHANNELS.getTotal.reply, playlistData.files.length);
 })
 
 

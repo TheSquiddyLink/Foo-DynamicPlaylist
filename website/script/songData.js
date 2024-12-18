@@ -1,4 +1,4 @@
-import { CHANNELS, onMessage, sendMessage } from "./electron.js";
+import { CHANNELS, onMessage, sendAndReceive, sendMessage } from "./electron.js";
 
 
 export async function displaySong(index){
@@ -24,11 +24,14 @@ onMessage(CHANNELS.getSongData.reply, (event, arg) => {
 async function changeSong(event, direction) {
     event.preventDefault();
 
+    var total = await sendAndReceive(CHANNELS.getTotal);
+
+
     var currentElement = document.getElementById("currentIndex");
     var totalElement = document.getElementById("totalSize");
     
     if (totalElement.innerHTML == "?") {
-        totalElement.innerHTML = await (await fetch("/getTotal")).text();
+        totalElement.innerHTML = total
     }
 
     if (currentElement.innerHTML == "?") {
@@ -68,4 +71,4 @@ function submitTags(event){
 
 document.getElementById("next").addEventListener("click", (event) => changeSong(event, 'next'));
 document.getElementById("prev").addEventListener("click", (event) => changeSong(event, 'prev'));
-document.getElementById("songDataForm").addEventListener("submit", submitTags);
+document.getElementById("dataSubmit").addEventListener("click", submitTags);

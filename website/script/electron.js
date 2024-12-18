@@ -11,7 +11,7 @@ export class Channel {
 // [X] promptFileInput
 // [ ] setSong
 // [ ] stopPlaylist
-// [ ] getTotal
+// [X] getTotal
 // [ ] playlistStatus
 // [X] getSongData
 
@@ -20,11 +20,41 @@ export const CHANNELS = {
     getPlaylist: new Channel('getPlaylist'),
     getPlaylistHE: new Channel('getPlaylistHE'),
     getSongData: new Channel('getSongData'),
+    getTotal: new Channel('getTotal'),
 };
 
-export function sendMessage(channel, data) {
-   window.electron.sendMessage(channel, data);
+/**
+ * 
+ * @param {Channel} channel 
+ * @param {*} data 
+ * @returns {Promise<*>}
+ */
+export function sendAndReceive(channel, data = null) {
+    return new Promise((resolve, reject) => {
+        try {
+            window.electron.onceMessage(channel.reply, (event, arg) => {
+                resolve(arg);
+            });
+            sendMessage(channel.send, data);
+        } catch (error) {
+            reject(error);
+        }
+    });
 }
+
+
+export function sendMessage(channel, data) {
+    if (window.electron && window.electron.sendMessage) {
+        window.electron.sendMessage(channel, data);
+    } else {
+        console.error(`sendMessage: Electron bridge is not defined.`);
+    }
+}
+
 export function onMessage(channel, callback) {
-   window.electron.onMessage(channel, callback);
+    if (window.electron && window.electron.onMessage) {
+        window.electron.onMessage(channel, callback);
+    } else {
+        console.error(`onMessage: Electron bridge is not defined.`);
+    }
 }

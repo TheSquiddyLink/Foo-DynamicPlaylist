@@ -30,6 +30,15 @@ onMessage(CHANNELS.getPlaylist.reply, (event, args) => {
     document.getElementById("formSubmit").disabled = false;
     document.getElementById("stop").disabled = true;
     document.getElementById("songDataForm").classList.remove("hidden");
+    updateData();
+    document.querySelector(".progress").style.width = "100%";
+    document.getElementById("currentIndex").innerHTML = 1;
+    document.getElementById("totalSize").innerHTML = args.files.length;
+    document.getElementById("songDataForm").classList.remove("hidden");
+    if(document.getElementById("totalSize").innerHTML == "0") {
+        alert("No songs in playlist");
+        return;
+    }
     displaySong(0);
 })
 
