@@ -1,6 +1,6 @@
 {
   "name": "foo-dynamicplaylist",
-  "version": "0.1.0",
+  "version": "0.1.0-alpha",
   "description": "",
   "main": "app.js",
   "type": "module",
