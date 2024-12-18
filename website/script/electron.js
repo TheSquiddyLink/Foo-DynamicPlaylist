@@ -12,7 +12,7 @@ export class Channel {
 // [ ] setSong
 // [ ] stopPlaylist
 // [X] getTotal
-// [ ] playlistStatus
+// [X] playlistStatus
 // [X] getSongData
 
 export const CHANNELS = {
@@ -21,6 +21,7 @@ export const CHANNELS = {
     getPlaylistHE: new Channel('getPlaylistHE'),
     getSongData: new Channel('getSongData'),
     getTotal: new Channel('getTotal'),
+    playlistStatus: new Channel('playlistStatus'),
 };
 
 /**

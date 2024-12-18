@@ -1,4 +1,4 @@
-import { sendMessage, onMessage, CHANNELS} from "./electron.js";
+import { sendMessage, onMessage, CHANNELS, sendAndReceive} from "./electron.js";
 import { displaySong } from "./songData.js";
 
 console.log("Hello World")
@@ -49,15 +49,21 @@ async function submitForm(event) {
     document.getElementById("formSubmit").disabled = true;
     document.getElementById("stop").disabled = false;
 
-    const formData = new FormData(document.getElementById("form"));
-
     document.querySelector(".progressStats").classList.remove("hidden");
     
-    var processing = true;
     var hideErrors = document.getElementById("hideErrors").checked;
     console.log(hideErrors);
     sendMessage(CHANNELS[hideErrors ? 'getPlaylistHE': 'getPlaylist'].send, document.getElementById("playlist").value);
 
+    var remaining = parseInt(document.getElementById("remaining").innerHTML);
+
+    console.log("Begining Loop")
+    while(remaining > 0) {
+        console.log("Remaining: " + remaining);
+        await wait(250);
+        await updateData()
+        remaining = parseInt(document.getElementById("remaining").innerHTML);
+    }
 
     /*
     .then(response => response.json())
@@ -92,16 +98,15 @@ async function submitForm(event) {
 }
 
 async function updateData(){
-    let data = await fetch("/playlistStatus");
-    let jsonData = await data.json()
-    let percentage = jsonData.percentage;
+    let data = await sendAndReceive(CHANNELS.playlistStatus);
+    let percentage = data.percentage;
     console.log(percentage);
     document.querySelector(".progress").style.width = percentage + "%";
 
-    document.getElementById("total").innerHTML = jsonData.total;
-    document.getElementById("remaining").innerHTML = jsonData.remaining;
-    document.getElementById("elapsed").innerHTML = formatTime(jsonData.elapsed);
-    document.getElementById("failed").innerHTML = jsonData.failed;
+    document.getElementById("total").innerHTML = data.total;
+    document.getElementById("remaining").innerHTML = data.remaining;
+    document.getElementById("elapsed").innerHTML = formatTime(data.elapsed);
+    document.getElementById("failed").innerHTML = data.failed;
 
 }
 

@@ -72,6 +72,12 @@ ipcMain.on(CHANNELS.getTotal.send, async (event, arg) => {
     event.reply(CHANNELS.getTotal.reply, playlistData.files.length);
 })
 
+ipcMain.on(CHANNELS.playlistStatus.send, async (event, arg) => {
+    console.log("Getting playlist status");
+    const simplifiedPlaylistStatus = Object.assign({}, playlistStatus);
+    delete simplifiedPlaylistStatus.toDefault;
+    event.reply(CHANNELS.playlistStatus.reply, simplifiedPlaylistStatus);
+})
 
 function getSongDataIndex(event,index){
     if(!playlistData){
@@ -175,6 +181,7 @@ async function getAllSongData(playlist, hideErrors){
             }
 
             playlistStatus.percentage = (i + 1) / length * 100;
+            console.log(playlistStatus.remaining);
             playlistStatus.remaining--;
             playlistStatus.elapsed = Date.now() - startTime;
         }
