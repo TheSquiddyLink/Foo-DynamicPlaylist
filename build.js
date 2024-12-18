@@ -42,8 +42,10 @@ exec(command, (error, stdout, stderr) => {
         author: originalPackageJson.author,
         license: originalPackageJson.license,
         dependencies: originalPackageJson.dependencies,
+        type: originalPackageJson.type,
     };
 
+    console.log(minimalPackageJson)
     const folderName = fileName + "-" + build.platform + "-" + build.arch;
 
     const buildDir = join(build.out, folderName, "resources", "app");
