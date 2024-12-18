@@ -52,19 +52,28 @@ ipcMain.on(CHANNELS.promptFileInput.send, async (event, arg) => {
 ipcMain.on(CHANNELS.getPlaylist.send, async (event, arg) => {
     console.log("Getting playlist");
     const playlist = arg;
+    await getPlaylist(playlist, event, false);
+})
 
+ipcMain.on(CHANNELS.getPlaylistHE.send, async (event, arg) => {
+    console.log("Getting playlist");
+    const playlist = arg;
+    await getPlaylist(playlist, event, true);
+})
+
+
+async function getPlaylist(playlist, event, hideErrors){
     try {
         const data = fs.readFileSync(playlist, 'utf8');
         console.log(data);
         const playlistData = formatPlaylistData(data, playlist);
-        const allSongsData = await getAllSongData(playlistData, false);
+        const allSongsData = await getAllSongData(playlistData, hideErrors);
         event.reply(CHANNELS.getPlaylist.reply, allSongsData);
     } catch (err) {
         console.log(err)
         event.reply(CHANNELS.getPlaylist.reply, err.message);
     }
-})
-
+}
 function formatPlaylistData(data, path){
     return {
         folder: formatPlaylistPath(path),

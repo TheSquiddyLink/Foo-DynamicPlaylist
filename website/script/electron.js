@@ -18,6 +18,7 @@ export class Channel {
 export const CHANNELS = {
     promptFileInput: new Channel('promptFileInput'),
     getPlaylist: new Channel('getPlaylist'),
+    getPlaylistHE: new Channel('getPlaylistHE'),
 };
 
 export function sendMessage(channel, data) {
