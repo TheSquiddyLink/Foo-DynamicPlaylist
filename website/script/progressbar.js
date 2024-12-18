@@ -21,7 +21,7 @@ onMessage(CHANNELS.promptFileInput.reply, (event, arg) => {
 
 function stop(event){
     event.preventDefault();
-    fetch('/stopPlaylist');
+    sendMessage(CHANNELS.stopPlaylist.send);
 }
 
 onMessage(CHANNELS.getPlaylist.reply, (event, args) => {

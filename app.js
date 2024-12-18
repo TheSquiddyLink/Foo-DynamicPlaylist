@@ -79,6 +79,10 @@ ipcMain.on(CHANNELS.playlistStatus.send, async (event, arg) => {
     event.reply(CHANNELS.playlistStatus.reply, simplifiedPlaylistStatus);
 })
 
+ipcMain.on(CHANNELS.stopPlaylist.send, async () => {
+    playlistStatus.toDefault();
+})
+
 function getSongDataIndex(event,index){
     if(!playlistData){
         console.error("Playlist not loaded");
