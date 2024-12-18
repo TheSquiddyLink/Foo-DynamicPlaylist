@@ -26,10 +26,20 @@ function createWindow () {
     }
   })
 
-  win.loadFile('website/index.html')
+    win.loadFile('website/index.html')
     if (development) {
         win.webContents.openDevTools()
     }
+    // Set different CSP based on the environment
+    const csp = process.env.NODE_ENV === 'development'
+    ? "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; object-src 'none'; connect-src 'self';"
+    : "default-src 'self'; script-src 'self'; style-src 'self'; object-src 'none'; connect-src 'self';";
+
+    // Set the CSP header in the HTML or via webPreferences
+    win.webContents.session.webRequest.onHeadersReceived((details, callback) => {
+    details.responseHeaders['Content-Security-Policy'] = [csp];
+        callback({ cancel: false, responseHeaders: details.responseHeaders });
+    });
 }
 
 app.whenReady().then(() => {
