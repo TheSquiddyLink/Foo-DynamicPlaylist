@@ -85,9 +85,19 @@ ipcMain.on(CHANNELS.getSongData.send, async (event, arg) => {
 
 ipcMain.on(CHANNELS.getTotal.send, async (event, arg) => {
     console.log("Getting total");
-    event.reply(CHANNELS.getTotal.reply, playlistData.files.length);
+    
+    if(!playlistData){
+        console.error("Playlist not loaded");
+        event.reply(CHANNELS.getTotal.reply, 0);
+    }
+    else if(!playlistData.files){
+        console.log("No Playlist Files")
+        event.reply(CHANNELS.getTotal.reply, 0);
+    }
+    else {
+        event.reply(CHANNELS.getTotal.reply, playlistData.files.length);
+    }
 })
-
 ipcMain.on(CHANNELS.playlistStatus.send, async (event, arg) => {
     console.log("Getting playlist status");
     const simplifiedPlaylistStatus = Object.assign({}, playlistStatus);
@@ -150,6 +160,10 @@ function setSong(event, arg) {
 function getSongDataIndex(event,index){
     if(!playlistData){
         console.error("Playlist not loaded");
+        event.reply(CHANNELS.getSongData.reply, "{}");
+    }
+    else if(!playlistData.files){
+        console.log("No Playlist Files")
         event.reply(CHANNELS.getSongData.reply, "{}");
     }
     else if(Number(index) >= playlistData.files.length) {
