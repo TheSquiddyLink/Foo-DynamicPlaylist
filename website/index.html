@@ -60,48 +60,50 @@
     </div>
    
    
-
-    <form id="songDataForm" class="hidden">
-        <div class="data">
-            <p>
-                Song: 
-                <span id="currentIndex">?</span>/
-                <span id="totalSize">?</span>
-            </p>
-            <p id="title"></p>
-            <p id="album"></p>
-            <p id="artist"></p>
-        </div>
-        <div class="settings">
-            <label for="timeOfDay">Time of Day</label>
-            <div>
-                <label for="timeOfDayMorning">
-                    <input type="checkbox" id="timeOfDayMorning" name="timeOfDay" value="Morning"> Morning
-                </label>
-                <label for="timeOfDayDay">
-                    <input type="checkbox" id="timeOfDayDay" name="timeOfDay" value="Day"> Day
-                </label>
-                <label for="timeOfDayEvening">
-                    <input type="checkbox" id="timeOfDayEvening" name="timeOfDay" value="Evening"> Evening
-                </label>
-                <label for="timeOfDayNight">
-                    <input type="checkbox" id="timeOfDayNight" name="timeOfDay" value="Night"> Night
-                </label>
+    <div class="dataContainer">
+        <form id="songDataForm" class="hidden">
+            <div class="data">
+                <p>
+                    Song: 
+                    <span id="currentIndex">?</span>/
+                    <span id="totalSize">?</span>
+                </p>
+                <p id="title"></p>
+                <p id="album"></p>
+                <p id="artist"></p>
+            </div>
+            <div class="settings">
+                <label for="timeOfDay">Time of Day</label>
+                <div>
+                    <label for="timeOfDayMorning">
+                        <input type="checkbox" id="timeOfDayMorning" name="timeOfDay" value="Morning"> Morning
+                    </label>
+                    <label for="timeOfDayDay">
+                        <input type="checkbox" id="timeOfDayDay" name="timeOfDay" value="Day"> Day
+                    </label>
+                    <label for="timeOfDayEvening">
+                        <input type="checkbox" id="timeOfDayEvening" name="timeOfDay" value="Evening"> Evening
+                    </label>
+                    <label for="timeOfDayNight">
+                        <input type="checkbox" id="timeOfDayNight" name="timeOfDay" value="Night"> Night
+                    </label>
+                </div>
+                <div>
+                    <input class="hidden" id="currentIndexInput" name="currentIndex">
+                    <label for="temp">Temperature</label>
+                    <input type="number" id="temp" name="temp" placeholder="Temperature" min="0" max="100">
+                </div>
             </div>
             <div>
-                <input class="hidden" id="currentIndexInput" name="currentIndex">
-                <label for="temp">Temperature</label>
-                <input type="number" id="temp" name="temp" placeholder="Temperature" min="0" max="100">
+                <div class="navButtons">
+                    <button id="prev">Prev</button>
+                    <button type="submit" id="dataSubmit">Submit</button>
+                    <button id="next">Next</button>
+                </div>
             </div>
-        </div>
-        <div>
-            <div class="navButtons">
-                <button id="prev">Prev</button>
-                <button type="submit" id="dataSubmit">Submit</button>
-                <button id="next">Next</button>
-            </div>
-        </div>
-    </form>
+        </form>
+    </div>
+   
     <div class="bgBtn">
         <label for="aniBackground">Animate Background</label>
         <input id="aniBackground" type="checkbox" checked>
