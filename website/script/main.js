@@ -19,6 +19,7 @@ document.addEventListener("DOMContentLoaded", async ()=> {
         document.getElementById("songDataForm").classList.remove("hidden");
         displaySong(0);
     }
+    aniBackground();
 })
 
 window.addEventListener("resize", setBackground);
@@ -51,8 +52,10 @@ function setBackground(){
     
 }
 
-document.getElementById("aniBackground").addEventListener("change", () => {
+document.getElementById("aniBackground").addEventListener("change", aniBackground)
+
+function aniBackground(){
     console.log("Changed")
     var bg = document.getElementById("backgroundDivs")
     document.getElementById("aniBackground").checked ? bg.classList.add("animateBackground") : bg.classList.remove("animateBackground");
-})
+}

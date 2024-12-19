@@ -5,15 +5,6 @@ export class Channel {
     }
 }
 
-// Channels:
-// [X] getPlaylist 
-// [X] getPlaylistHE
-// [X] promptFileInput
-// [ ] setSong
-// [X] stopPlaylist
-// [X] getTotal
-// [X] playlistStatus
-// [X] getSongData
 
 export const CHANNELS = {
     promptFileInput: new Channel('promptFileInput'),
