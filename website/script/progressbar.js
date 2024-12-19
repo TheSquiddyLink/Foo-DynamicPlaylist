@@ -49,7 +49,7 @@ async function submitForm(event) {
     document.getElementById("formSubmit").disabled = true;
     document.getElementById("stop").disabled = false;
 
-    document.querySelector(".progressStats").classList.remove("hidden");
+    document.querySelector(".progressStats").classList.remove("hiddenOpacity");
     
     var hideErrors = document.getElementById("hideErrors").checked;
     console.log(hideErrors);

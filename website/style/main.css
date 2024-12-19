@@ -6,17 +6,20 @@
 body,html {
     height:100%;
     margin: 0;
+    font-family: OpenSans-Regular;
 }
 
 .background {
-    position: absolute; /* Keep the background behind everything */
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
+    height: 100%;
     overflow: hidden;
     max-width: 100vw;
     pointer-events: none;
+    z-index: -1;
 }
 
 .background > div {
@@ -62,12 +65,14 @@ header > * {
 }
 
 .progressContainer {
-    height: 20px;
+    --height: 40px;
+    height: var(--height);
+    line-height: var(--height);
     background-color: #e0e0e0;
-    border-radius: 10px;
+    border-radius: 50px;
     overflow: hidden;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    margin: 10px
+    margin: 10px;
 }
 .progress, .failed {
     height: 100%;
@@ -85,9 +90,32 @@ header > * {
     display: inline;
 }
 
+.progressStats {
+    display: flex;
+    position: absolute;
+    justify-content: space-around;
+    height: inherit;
+    width: 100%;
+    border-radius: 100px;
+    justify-content: center;
+    vertical-align: middle;
+    left: 0;
+    opacity: 1;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.progressStats > div {
+    --margin-lr: 20px;
+    margin-left: var(--margin-lr) ;
+    margin-right: var(--margin-lr) ;
+}
 
 .hidden, .hidden * {
     display: none;
+}
+
+.hiddenOpacity {
+    opacity: 0;
 }
 
 #form {
@@ -127,4 +155,14 @@ header > * {
 
 .settings  * {
     margin: 3px;
+}
+
+
+@font-face {
+    font-family: OpenSans-Bold;
+    src: url('../assets/font/OpenSans-Bold.ttf');
+}
+@font-face {
+    font-family: OpenSans-Regular;
+    src: url('../assets/font/OpenSans-Regular.ttf');
 }

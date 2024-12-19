@@ -38,26 +38,28 @@
     </form>
 
     <div class="progressContainer">
+        <div class="progressStats hiddenOpacity">
+            <div>
+                <label for="elapsed">Elapsed Time (ms):</label>
+                <p id="elapsed">1000</p>
+            </div>
+            <div>
+                <label for="remaining">Remaining Songs:</label>
+                <p>
+                    <span id="remaining">20</span>/<span id="total">30</span>
+                </p>
+            </div>
+            <div>
+                <label for="failed">Failed:</label>
+                <p id="failed">2</p>
+            </div>
+        </div>
         <div class="progress">
             <div class="failed"></div>
         </div>
     </div>
-    <div class="progressStats hidden">
-        <div>
-            <label for="elapsed">Elapsed Time (ms):</label>
-            <p id="elapsed">1000</p>
-        </div>
-        <div>
-            <label for="remaining">Remaining Songs:</label>
-            <p>
-                <span id="remaining">20</span>/<span id="total">30</span>
-            </p>
-        </div>
-        <div>
-            <label for="failed">Failed:</label>
-            <p id="failed">2</p>
-        </div>
-    </div>
+   
+   
 
     <form id="songDataForm" class="hidden">
         <div class="data">
