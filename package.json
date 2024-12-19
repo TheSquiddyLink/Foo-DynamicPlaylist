@@ -13,7 +13,7 @@
     "productName": "YourAppName",
     "files": [
       "**/*",
-      "!**/node_modules/.cache/**"  
+      "!**/node_modules/.cache/**"
     ],
     "asarUnpack": [
       "node_modules/node-id3/**"
@@ -23,7 +23,10 @@
       "icon": "build/icons/icon.icns"
     },
     "win": {
-      "target": ["portable","nsis"],
+      "target": [
+        "portable",
+        "nsis"
+      ],
       "icon": "build/icons/icon.ico"
     },
     "linux": {
@@ -44,6 +47,7 @@
   "devDependencies": {
     "electron": "^33.2.1",
     "electron-builder": "^25.1.8",
-    "electron-packager": "^17.1.2"
+    "electron-packager": "^17.1.2",
+    "electron-reload": "^2.0.0-alpha.1"
   }
 }
