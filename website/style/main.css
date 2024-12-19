@@ -47,14 +47,15 @@ body,html {
         #f2aa4e,
         #88c64a, 
         #52b8c0,
-        #6e529d  
+        #6e529d, 
+        #8a52b7
     );
     filter: brightness(0.80);
-    background-size: 100% 500%;
+    background-size: 100% 900%;
 }
 
 .animateBackground {
-    animation: animatedBackground 120s ease infinite;
+    animation: animatedBackground 120s linear infinite;
 }
 
 .background > div > div{
@@ -190,6 +191,8 @@ header > * {
     right: 0;
     padding: 10px;
 }  
+
+
 
 @font-face {
     font-family: OpenSans-Bold;
