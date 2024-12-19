@@ -129,8 +129,11 @@ ipcMain.on(CHANNELS.getVersion.send, async (event) => {
 function setSong(event, arg) {
     const index = arg.index;
     const song = playlistData.files[index];
+
     const timeOfDay = arg.timeOfDay;
     const temp = arg.temp;
+
+    song.tags.setCustomTags(timeOfDay, temp);
 
     if(song.path.includes(".mp3")){
         NodeID3.update({
@@ -349,6 +352,15 @@ class Tags {
             timeOfDay: [false, false, false, false],
             temp: 0
         }
+    }
+
+    /**
+     * @param {boolean[]} timeOfDay
+     * @param {Number} temp
+     */
+    setCustomTags(timeOfDay, temp){
+        this.custom.timeOfDay = timeOfDay;
+        this.custom.temp = temp;
     }
 }
 
