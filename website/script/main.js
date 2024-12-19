@@ -60,9 +60,16 @@ function setBackground(){
 }
 
 document.getElementById("aniBackground").addEventListener("change", aniBackground)
+document.getElementById("export").addEventListener("click", exportData);
 
 function aniBackground(){
     console.log("Changed")
     var bg = document.getElementById("backgroundDivs")
     document.getElementById("aniBackground").checked ? bg.classList.add("animateBackground") : bg.classList.remove("animateBackground");
+}
+
+function exportData(){
+    console.log("Exporting data");
+    const  data = document.getElementById("result").innerHTML;
+    sendMessage(CHANNELS.exportData.send, data);
 }

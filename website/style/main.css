@@ -208,6 +208,9 @@ header > * {
 }  
 
 
+.exportContainer {
+    margin: 10px;
+}
 
 @font-face {
     font-family: OpenSans-Bold;

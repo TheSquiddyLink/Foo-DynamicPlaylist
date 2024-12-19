@@ -132,6 +132,22 @@ ipcMain.on(CHANNELS.getPlaylistJSON.send, async (event)=> {
     event.reply(CHANNELS.getPlaylistJSON.reply, JSON.stringify(playlistData, null, 4));
 })
 
+ipcMain.on(CHANNELS.exportData.send, (event) => {
+    console.log("Exporting data");
+    const playlistJSON = JSON.stringify(playlistData, null, 4);
+    dialog.showSaveDialog({
+        defaultPath: 'playlist.json',
+        filters: [
+            { name: 'JSON', extensions: ['json'] },
+        ],
+    }).then((result) => {
+        if (result.filePath) {
+            fs.writeFileSync(result.filePath, playlistJSON);
+            console.log(`Playlist JSON exported to ${result.filePath}`);
+        }
+    })
+})
+
 function setSong(event, arg) {
     const index = arg.index;
     const song = playlistData.files[index];
