@@ -4,6 +4,8 @@ import { CHANNELS, onMessage, sendAndReceive, sendMessage } from "./electron.js"
 export async function displaySong(index){
     console.log("Displaying song: " + index);
     sendMessage(CHANNELS.getSongData.send, index);
+    document.getElementById("currentIndex").innerHTML = index + 1;
+    document.getElementById("totalSize").innerHTML =  await sendAndReceive(CHANNELS.getTotal);
 }
 
 onMessage(CHANNELS.getSongData.reply, (event, arg) => {
@@ -20,6 +22,8 @@ onMessage(CHANNELS.getSongData.reply, (event, arg) => {
     document.getElementById("timeOfDayNight").checked = data.tags.custom.timeOfDay[3];
     document.getElementById("temp").value = data.tags.custom.temp;
     document.getElementById("currentIndexInput").value = data.index;
+   
+    document.getElementById("totalSize").innerHTML = data.total;
 })
 
 

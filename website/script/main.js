@@ -1,4 +1,5 @@
 import { CHANNELS, sendAndReceive, sendMessage } from "./electron.js";
+import { displaySong } from "./songData.js";
 
 document.querySelectorAll("#headerImg").forEach(img => {
     img.addEventListener("click", () => {
@@ -13,6 +14,11 @@ document.addEventListener("DOMContentLoaded", async ()=> {
     const url = `https://img.shields.io/badge/installed-v${version}-${color}`
     console.log(url)
     document.getElementById("version").src = url;
+    var result = await sendAndReceive(CHANNELS.playlistStatus);
+    if(result.status == "complete"){
+        document.getElementById("songDataForm").classList.remove("hidden");
+        displaySong(0);
+    }
 })
 
 window.addEventListener("resize", setBackground);

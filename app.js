@@ -274,6 +274,7 @@ async function getAllSongData(playlist, hideErrors){
             playlistStatus.remaining--;
             playlistStatus.elapsed = Date.now() - startTime;
         }
+        playlistStatus.status = "complete";
     } catch (err) {
         console.error("Error getting song data:", err);
         playlistStatus.toDefault();
