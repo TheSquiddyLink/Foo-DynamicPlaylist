@@ -200,7 +200,7 @@ async function getPlaylist(playlist, event, hideErrors){
 function formatPlaylistData(data, path){
     return {
         folder: formatPlaylistPath(path),
-        files: formatPath(data).split('\n')
+        files: formatPath(data).split('\n').filter((item) => item !== "")
     }
 }
 /*
