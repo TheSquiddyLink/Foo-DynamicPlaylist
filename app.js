@@ -334,7 +334,7 @@ class Song {
     static getCustomTag(native, id){
         const tag = native.find(tag => tag.id === `TXXX:SQUIBS_${id}`)
         if(tag) return tag.value
-        return false;
+        return null;
     }
 }
 class Tags {
