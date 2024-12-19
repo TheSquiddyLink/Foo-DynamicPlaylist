@@ -68,7 +68,8 @@ function aniBackground(){
     document.getElementById("aniBackground").checked ? bg.classList.add("animateBackground") : bg.classList.remove("animateBackground");
 }
 
-function exportData(){
+function exportData(event){
+    event.preventDefault();
     console.log("Exporting data");
     const  data = document.getElementById("result").innerHTML;
     sendMessage(CHANNELS.exportData.send, data);
