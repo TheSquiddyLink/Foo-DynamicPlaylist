@@ -22,7 +22,8 @@ onMessage(CHANNELS.getSongData.reply, (event, arg) => {
     document.getElementById("timeOfDayMorning").checked = data.tags.custom.timeOfDay[0];
     document.getElementById("timeOfDayDay").checked = data.tags.custom.timeOfDay[1];
     document.getElementById("timeOfDayNight").checked = data.tags.custom.timeOfDay[2];
-    document.getElementById("temp").value = data.tags.custom.temp;
+    document.getElementById("tempHot").checked = data.tags.custom.temp.hot;
+    document.getElementById("tempCold").checked = data.tags.custom.temp.cold;
     document.getElementById("currentIndexInput").value = data.index;
    
     document.getElementById("totalSize").innerHTML = data.total;
@@ -74,13 +75,15 @@ function submitTags(event){
     const timeOfDay = [
         document.getElementById("timeOfDayMorning").checked,
         document.getElementById("timeOfDayDay").checked,
-        document.getElementById("timeOfDayEvening").checked,
         document.getElementById("timeOfDayNight").checked
     ];
     
     const index = Number(document.getElementById("currentIndex").innerHTML)-1;
 
-    const temp = document.getElementById("temp").value;
+    const temp = {
+        hot: document.getElementById("tempHot").checked,
+        cold: document.getElementById("tempCold").checked
+    }
 
     const formData ={
         index: index,

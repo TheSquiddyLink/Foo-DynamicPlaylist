@@ -84,9 +84,16 @@
                     </label>
                 </div>
                 <div>
-                    <input class="hidden" id="currentIndexInput" name="currentIndex">
                     <label for="temp">Temperature</label>
-                    <input type="number" id="temp" name="temp" placeholder="Temperature" min="0" max="100">
+                    <div>
+                        <input class="hidden" id="currentIndexInput" name="currentIndex">
+                        <label for="tempHot">
+                            <input type="checkbox" id="tempHot" name="temp" value="Hot"> Hot
+                        </label>
+                        <label for="tempCold">
+                            <input type="checkbox" id="tempCold" name="temp" value="Cold"> Cold
+                        </label>
+                    </div>  
                 </div>
             </div>
             <div>

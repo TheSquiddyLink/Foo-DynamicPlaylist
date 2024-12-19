@@ -174,8 +174,12 @@ function setSong(event, arg) {
                     value: String(timeOfDay[2])
                 },
                 {
-                    description: "SQUIBS_TEMP",
-                    value: String(temp)
+                    description: "SQUIBS_TEMP_HOT",
+                    value: String(temp.hot)
+                },
+                {
+                    description: "SQUIBS_TEMP_COLD",
+                    value: String(temp.cold)
                 }
             ] 
             }, song.path);
@@ -329,13 +333,16 @@ class Song {
     tags = new Tags();
     isValid = true;
 
-    constructor(path, artist, album, title, morning=false, day=false, evening=false, night=false, temp=0) {
+    constructor(path, artist, album, title, morning=false, day=false, evening=false, night=false, tempHot=false, tempCold=false) {
         this.path = path;
         this.tags.artist = artist;
         this.tags.album = album;
         this.tags.title = title;
         this.tags.custom.timeOfDay = [morning, day, evening, night];
-        this.tags.custom.temp = temp;
+        this.tags.custom.temp = {
+            hot: tempHot,
+            cold: tempCold
+        };
         console.log(this)
     }
 
@@ -349,7 +356,7 @@ class Song {
 
         const customTags = nodeID3.native["ID3v2.3"];
         console.log(customTags);
-        const song = new Song(path, tags.artist, tags.album, tags.title, this.getCustomBoolTag(customTags,"MORNING") , this.getCustomBoolTag(customTags,"DAY"), this.getCustomBoolTag(customTags,"EVENING"),this.getCustomBoolTag(customTags,"NIGHT"), this.getCustomTag(customTags,"TEMP"));
+        const song = new Song(path, tags.artist, tags.album, tags.title, this.getCustomBoolTag(customTags,"MORNING") , this.getCustomBoolTag(customTags,"DAY"), this.getCustomBoolTag(customTags,"EVENING"),this.getCustomBoolTag(customTags,"NIGHT"), this.getCustomBoolTag(customTags,"TEMP_HOT"),this.getCustomBoolTag(customTags,"TEMP_COLD"));
         return song;
     }
     static getCustomBoolTag(native, id){
