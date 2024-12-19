@@ -42,6 +42,8 @@ onMessage(CHANNELS.getPlaylist.reply, (event, args) => {
     displaySong(0);
 })
 
+
+
 async function submitForm(event) {
 
     event.preventDefault();

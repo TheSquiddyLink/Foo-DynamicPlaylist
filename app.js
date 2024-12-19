@@ -126,6 +126,12 @@ ipcMain.on(CHANNELS.getVersion.send, async (event) => {
     console.log("Getting version");
     event.reply(CHANNELS.getVersion.reply, packageJSON.version);
 })
+
+ipcMain.on(CHANNELS.getPlaylistJSON.send, async (event)=> {
+    console.log("Getting playlist JSON");
+    event.reply(CHANNELS.getPlaylistJSON.reply, JSON.stringify(playlistData, null, 4));
+})
+
 function setSong(event, arg) {
     const index = arg.index;
     const song = playlistData.files[index];

@@ -17,6 +17,7 @@ export const CHANNELS = {
     setSong: new Channel('setSong'),
     openLink: new Channel('openLink'),
     getVersion: new Channel('getVersion'),
+    getPlaylistJSON: new Channel('getPlaylistJSON'),
 };
 
 /**

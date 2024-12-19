@@ -6,6 +6,9 @@ export async function displaySong(index){
     sendMessage(CHANNELS.getSongData.send, index);
     document.getElementById("currentIndex").innerHTML = index + 1;
     document.getElementById("totalSize").innerHTML =  await sendAndReceive(CHANNELS.getTotal);
+    var playlistJSON = await sendAndReceive(CHANNELS.getPlaylistJSON);
+
+    document.getElementById("result").innerHTML = playlistJSON;
 }
 
 onMessage(CHANNELS.getSongData.reply, (event, arg) => {
