@@ -226,6 +226,7 @@ var playlistStatus = {
     remaining: 0,
     elapsed: 0,
     failed: 0,
+    finished: 0,
     toDefault: function () {
         this.status = "inactive";
         this.percentage = 0;
@@ -233,6 +234,7 @@ var playlistStatus = {
         this.remaining = 0;
         this.elapsed = 0;
         this.failed = 0;
+        this.finished = 0;
     }
 };
 
@@ -272,6 +274,7 @@ async function getAllSongData(playlist, hideErrors){
             playlistStatus.percentage = (i + 1) / length * 100;
             console.log(playlistStatus.remaining);
             playlistStatus.remaining--;
+            playlistStatus.finished++;
             playlistStatus.elapsed = Date.now() - startTime;
         }
         playlistStatus.status = "complete";

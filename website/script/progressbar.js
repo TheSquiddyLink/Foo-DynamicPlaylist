@@ -54,15 +54,17 @@ async function submitForm(event) {
     var hideErrors = document.getElementById("hideErrors").checked;
     console.log(hideErrors);
     sendMessage(CHANNELS[hideErrors ? 'getPlaylistHE': 'getPlaylist'].send, document.getElementById("playlist").value);
-
-    var remaining = parseInt(document.getElementById("remaining").innerHTML);
-
+    await updateData();
+    var finished = parseInt(document.getElementById("finished").innerHTML);
+    var total = parseInt(document.getElementById("total").innerHTML);
+    console.log("Total: " + total);
+    console.log("Finished: " + finished);
     console.log("Begining Loop")
-    while(remaining > 0) {
-        console.log("Remaining: " + remaining);
+    while(finished < total) {
+        console.log("Finished: " + finished);
         await wait(250);
         await updateData()
-        remaining = parseInt(document.getElementById("remaining").innerHTML);
+        finished = parseInt(document.getElementById("finished").innerHTML);
     }
 
     /*
@@ -105,7 +107,7 @@ async function updateData(){
     let failedPercentage = data.failed / (data.total - data.remaining)
     document.querySelector(".failed").style.width = failedPercentage * 100 + "%";
     document.getElementById("total").innerHTML = data.total;
-    document.getElementById("remaining").innerHTML = data.remaining;
+    document.getElementById("finished").innerHTML = data.finished;
     document.getElementById("elapsed").innerHTML = formatTime(data.elapsed);
     document.getElementById("failed").innerHTML = data.failed;
 
