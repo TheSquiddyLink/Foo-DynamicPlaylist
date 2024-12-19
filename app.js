@@ -170,12 +170,8 @@ function setSong(event, arg) {
                     value: String(timeOfDay[1])
                 },
                 {
-                    description: "SQUIBS_EVENING",
-                    value: String(timeOfDay[2])
-                },
-                {
                     description: "SQUIBS_NIGHT",
-                    value: String(timeOfDay[3])
+                    value: String(timeOfDay[2])
                 },
                 {
                     description: "SQUIBS_TEMP",

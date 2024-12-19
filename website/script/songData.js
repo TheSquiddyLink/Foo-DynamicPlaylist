@@ -21,8 +21,7 @@ onMessage(CHANNELS.getSongData.reply, (event, arg) => {
 
     document.getElementById("timeOfDayMorning").checked = data.tags.custom.timeOfDay[0];
     document.getElementById("timeOfDayDay").checked = data.tags.custom.timeOfDay[1];
-    document.getElementById("timeOfDayEvening").checked = data.tags.custom.timeOfDay[2];
-    document.getElementById("timeOfDayNight").checked = data.tags.custom.timeOfDay[3];
+    document.getElementById("timeOfDayNight").checked = data.tags.custom.timeOfDay[2];
     document.getElementById("temp").value = data.tags.custom.temp;
     document.getElementById("currentIndexInput").value = data.index;
    
