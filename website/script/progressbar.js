@@ -102,7 +102,8 @@ async function updateData(){
     let percentage = data.percentage;
     console.log(percentage);
     document.querySelector(".progress").style.width = percentage + "%";
-
+    let failedPercentage = data.failed / (data.total - data.remaining)
+    document.querySelector(".failed").style.width = failedPercentage * 100 + "%";
     document.getElementById("total").innerHTML = data.total;
     document.getElementById("remaining").innerHTML = data.remaining;
     document.getElementById("elapsed").innerHTML = formatTime(data.elapsed);

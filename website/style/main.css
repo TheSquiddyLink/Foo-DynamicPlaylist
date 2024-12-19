@@ -69,11 +69,16 @@ header > * {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     margin: 10px
 }
-.progress {
+.progress, .failed {
     height: 100%;
-    background-color: #76c7c0;
     width: 0%;
     transition: width 0.5s ease-in-out;
+}
+.progress {
+    background-color: #76c7c0;
+}
+.failed {
+    background-color: #c76868;
 }
 
 .progressStats > div > * {
