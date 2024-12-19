@@ -22,13 +22,39 @@ body,html {
     z-index: -1;
 }
 
+@keyframes animatedBackground {
+    0% {
+        background-position: 0% 0%;
+    }
+    100% {
+        background-position: 0% 100%;
+    }
+}
+
 .background > div {
     width: 150%; 
     height: 100%;
     position: absolute;
-    background: linear-gradient(to bottom, #6e529d 0%, #d97b93 100%);
     z-index: -1;
     overflow: hidden;
+    background: linear-gradient(
+        to bottom,
+        #6e529d, 
+        #8a52b7, 
+        #b052c0, 
+        #d97b93, 
+        #e8887c,
+        #f2aa4e,
+        #88c64a, 
+        #52b8c0,
+        #6e529d  
+    );
+    filter: brightness(0.80);
+    background-size: 100% 500%;
+}
+
+.animateBackground {
+    animation: animatedBackground 120s ease infinite;
 }
 
 .background > div > div{
@@ -158,6 +184,12 @@ header > * {
     margin: 3px;
 }
 
+.bgBtn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 10px;
+}  
 
 @font-face {
     font-family: OpenSans-Bold;

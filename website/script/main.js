@@ -50,3 +50,9 @@ function setBackground(){
     }
     
 }
+
+document.getElementById("aniBackground").addEventListener("change", () => {
+    console.log("Changed")
+    var bg = document.getElementById("backgroundDivs")
+    document.getElementById("aniBackground").checked ? bg.classList.add("animateBackground") : bg.classList.remove("animateBackground");
+})
