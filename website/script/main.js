@@ -14,3 +14,33 @@ document.addEventListener("DOMContentLoaded", async ()=> {
     console.log(url)
     document.getElementById("version").src = url;
 })
+
+window.addEventListener("resize", setBackground);
+document.onload = setBackground();
+
+function setBackground(){
+    // Get the width of the first-level div (background > div)
+    const backgroundDiv = document.querySelector('.background > div');
+    const backgroundWidth = backgroundDiv.offsetWidth;
+    // Get the width of the second-level div, including margins
+    const secondLevelDiv = document.querySelector('.background > div > div');
+    const secondLevelDivWidth = secondLevelDiv.offsetWidth + parseFloat(getComputedStyle(secondLevelDiv).marginLeft) + parseFloat(getComputedStyle(secondLevelDiv).marginRight);
+    // Calculate how many second-level divs can fit horizontally inside the first-level div
+    const numDivs = Math.floor(backgroundWidth / secondLevelDivWidth);
+    // Get the width of the first-level div (background > div)
+    const backgroundHeight = backgroundDiv.offsetWidth;
+    // Get the width of the second-level div, including margins
+    const secondLevelDivHeight = secondLevelDiv.offsetHeight + parseFloat(getComputedStyle(secondLevelDiv).marginTop) + parseFloat(getComputedStyle(secondLevelDiv).marginBottom);
+    // Calculate how many second-level divs can fit horizontally inside the first-level div
+    const numDivsHeight = Math.floor(backgroundHeight / secondLevelDivHeight);
+    const total = numDivs * numDivsHeight + 2;
+    var container = document.getElementById("backgroundDivs")
+    if(container.children.length != total){
+        container.innerHTML = "";
+        for(let i = 0; i<total; i++){
+            var div = document.createElement("div");
+            container.appendChild(div);
+        }
+    }
+    
+}

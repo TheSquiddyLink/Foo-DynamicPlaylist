@@ -6,6 +6,12 @@
     <title>Foobar2000 Dynamic Playlist | Tag Editor</title>
     <link rel="stylesheet" href="./style/main.css">
 <body>
+    <div class="background">
+        <div id="backgroundDivs">
+            <div></div>
+        </div>
+    </div>
+    
     <header>
         <div class="logos">
             <img id="headerImg" src="./assets/images/Foobar2000.png" location="https://www.foobar2000.org">
@@ -24,7 +30,7 @@
     </header>
     <form method="post" id="form">
         <button id="browse">Browse</button>
-        <input type="text" name="playlist" id="playlist" placeholder="c:path/to/file.m3u" required>
+        <input type="text" name="playlist" id="playlist" placeholder="C:\path\to\file.m3u" required>
         <button type="submit" id="formSubmit">Start</button>
         <button id="stop" disabled>Stop</button>
         <label for="hideErrors">Hide Errors</label>
