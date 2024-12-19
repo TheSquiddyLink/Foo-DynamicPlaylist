@@ -10,7 +10,14 @@ document.querySelectorAll("#headerImg").forEach(img => {
 document.addEventListener("DOMContentLoaded", async ()=> {
     var version = await sendAndReceive(CHANNELS.getVersion);
     version = version.replace("-","--")
-    var color = version.includes("alpha") ? "orange" : "green"
+    var color;
+    if(version.includes("dev")){
+        color = "red"
+    } else if(version.includes("alpha")){
+        color = "orange"
+    } else {
+        color = "green"
+    }
     const url = `https://img.shields.io/badge/installed-v${version}-${color}`
     console.log(url)
     document.getElementById("version").src = url;
