@@ -155,6 +155,7 @@ function setSong(event, arg) {
     const timeOfDay = arg.timeOfDay;
     const temp = arg.temp;
 
+    const weather = arg.weather;
     song.tags.setCustomTags(timeOfDay, temp);
 
     if(song.path.includes(".mp3")){
@@ -180,6 +181,10 @@ function setSong(event, arg) {
                 {
                     description: "SQUIBS_TEMP_COLD",
                     value: String(temp.cold)
+                },
+                {
+                    description: "SQUIBS_WEATHER_RAINY",
+                    value: String(weather.raining)
                 }
             ] 
             }, song.path);
@@ -333,16 +338,20 @@ class Song {
     tags = new Tags();
     isValid = true;
 
-    constructor(path, artist, album, title, morning=false, day=false, evening=false, night=false, tempHot=false, tempCold=false) {
+    constructor(path, artist, album, title, morning=false, day=false, night=false, tempHot=false, tempCold=false, raining=false) {
         this.path = path;
         this.tags.artist = artist;
         this.tags.album = album;
         this.tags.title = title;
-        this.tags.custom.timeOfDay = [morning, day, evening, night];
+        this.tags.custom.timeOfDay = [morning, day, night];
         this.tags.custom.temp = {
             hot: tempHot,
             cold: tempCold
         };
+        this.tags.custom.weather= {
+            raining: raining
+        
+        }
         console.log(this)
     }
 
@@ -356,7 +365,7 @@ class Song {
 
         const customTags = nodeID3.native["ID3v2.3"];
         console.log(customTags);
-        const song = new Song(path, tags.artist, tags.album, tags.title, this.getCustomBoolTag(customTags,"MORNING") , this.getCustomBoolTag(customTags,"DAY"), this.getCustomBoolTag(customTags,"EVENING"),this.getCustomBoolTag(customTags,"NIGHT"), this.getCustomBoolTag(customTags,"TEMP_HOT"),this.getCustomBoolTag(customTags,"TEMP_COLD"));
+        const song = new Song(path, tags.artist, tags.album, tags.title, this.getCustomBoolTag(customTags,"MORNING") , this.getCustomBoolTag(customTags,"DAY"),this.getCustomBoolTag(customTags,"NIGHT"), this.getCustomBoolTag(customTags,"TEMP_HOT"),this.getCustomBoolTag(customTags,"TEMP_COLD"), this.getCustomBoolTag(customTags,"WEATHER_RAINY"));
         return song;
     }
     static getCustomBoolTag(native, id){
@@ -375,7 +384,8 @@ class Tags {
         this.title = "";
         this.custom = {
             timeOfDay: [false, false, false, false],
-            temp: 0
+            temp: {},
+            weather: {}
         }
     }
 

@@ -25,7 +25,7 @@ onMessage(CHANNELS.getSongData.reply, (event, arg) => {
     document.getElementById("tempHot").checked = data.tags.custom.temp.hot;
     document.getElementById("tempCold").checked = data.tags.custom.temp.cold;
     document.getElementById("currentIndexInput").value = data.index;
-   
+    document.getElementById("weatherRaining").checked = data.tags.custom.weather.raining;
     document.getElementById("totalSize").innerHTML = data.total;
 })
 
@@ -85,10 +85,15 @@ function submitTags(event){
         cold: document.getElementById("tempCold").checked
     }
 
+    const weather = {
+        raining: document.getElementById("weatherRaining").checked,
+    }
+
     const formData ={
         index: index,
         timeOfDay: timeOfDay,
-        temp: temp
+        temp: temp,
+        weather: weather
     }
 
     sendMessage(CHANNELS.setSong.send, formData);
