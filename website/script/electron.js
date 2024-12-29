@@ -20,6 +20,7 @@ export const CHANNELS = {
     getPlaylistJSON: new Channel('getPlaylistJSON'),
     exportData: new Channel('exportData'),
     updateConfig: new Channel('updateConfig'),
+    setFooLocation: new Channel('setFooLocation'),
 };
 
 /**

@@ -102,6 +102,16 @@ function submitTags(event){
     sendMessage(CHANNELS.setSong.send, formData);
 }
 
+async function getFooLocation(event){
+    console.log("Getting foo location");
+    event.preventDefault(); 
+    const response = await sendAndReceive(CHANNELS.setFooLocation);
+    document.getElementById("fooLocation").value = response;
+    console.log("Got Foo Location:", response)
+}
+
 document.getElementById("next").addEventListener("click", (event) => changeSong(event, 'next'));
 document.getElementById("prev").addEventListener("click", (event) => changeSong(event, 'prev'));
 document.getElementById("dataSubmit").addEventListener("click", submitTags);
+document.getElementById("browseFoo").addEventListener("click", getFooLocation);
+

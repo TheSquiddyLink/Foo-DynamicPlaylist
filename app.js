@@ -155,6 +155,21 @@ ipcMain.on(CHANNELS.updateConfig.send, async (event, arg) => {
     }
 })
 
+
+ipcMain.on(CHANNELS.setFooLocation.send, async (event, arg) => {
+    console.log("Setting foo location");
+    dialog.showOpenDialog({
+        properties: ['openFile'],
+        filters: [
+            { name: 'Executable', extensions: ['exe'] },
+        ],
+    }).then((result) => {
+        if (result.filePaths.length > 0) {
+            const fooLocation = result.filePaths[0];
+            event.reply(CHANNELS.setFooLocation.reply, fooLocation);
+        }
+    });
+})
 function setSong(event, arg) {
     const index = arg.index;
     const song = playlistData.files[index];

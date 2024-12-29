@@ -80,10 +80,11 @@ function exportData(event){
     const  data = document.getElementById("result").innerHTML;
     const config = {
         zipCode: document.getElementById("zipCode").value,
+        fooLocation: document.getElementById("fooLocation").value
     }
 
     sendMessage(CHANNELS.updateConfig.send, config);
-    
+
     sendMessage(CHANNELS.exportData.send, data);
  
 }
