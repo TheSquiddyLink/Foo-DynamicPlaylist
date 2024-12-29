@@ -89,12 +89,15 @@ function submitTags(event){
         raining: document.getElementById("weatherRaining").checked,
     }
 
+
     const formData ={
         index: index,
         timeOfDay: timeOfDay,
         temp: temp,
         weather: weather
     }
+
+    
 
     sendMessage(CHANNELS.setSong.send, formData);
 }

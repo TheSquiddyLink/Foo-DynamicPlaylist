@@ -19,6 +19,7 @@ export const CHANNELS = {
     getVersion: new Channel('getVersion'),
     getPlaylistJSON: new Channel('getPlaylistJSON'),
     exportData: new Channel('exportData'),
+    updateConfig: new Channel('updateConfig'),
 };
 
 /**

@@ -61,6 +61,12 @@ function setBackground(){
 
 document.getElementById("aniBackground").addEventListener("change", aniBackground)
 document.getElementById("export").addEventListener("click", exportData);
+document.getElementById("zipCheck").addEventListener("change", toggleZip);
+
+function toggleZip(){
+    document.getElementById("zipCodeDiv").classList.toggle("hidden");
+    document.getElementById("zipCode").value = ""
+}
 
 function aniBackground(){
     console.log("Changed")
@@ -72,5 +78,12 @@ function exportData(event){
     event.preventDefault();
     console.log("Exporting data");
     const  data = document.getElementById("result").innerHTML;
+    const config = {
+        zipCode: document.getElementById("zipCode").value,
+    }
+
+    sendMessage(CHANNELS.updateConfig.send, config);
+    
     sendMessage(CHANNELS.exportData.send, data);
+ 
 }

@@ -148,6 +148,13 @@ ipcMain.on(CHANNELS.exportData.send, (event) => {
     })
 })
 
+ipcMain.on(CHANNELS.updateConfig.send, async (event, arg) => {
+    console.log("Updating config");
+    if(playlistData){
+        playlistData.config = arg;
+    }
+})
+
 function setSong(event, arg) {
     const index = arg.index;
     const song = playlistData.files[index];
