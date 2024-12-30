@@ -88,3 +88,18 @@ function exportData(event){
     sendMessage(CHANNELS.exportData.send, data);
  
 }
+
+document.getElementById("showSelector").addEventListener("click", function() {
+    toggleSelector(true);
+});
+document.getElementById("hideSelector").addEventListener("click", function() {
+    toggleSelector(false);
+});
+function toggleSelector(show){
+    var selector = document.getElementById("songSelector");
+    if(show){
+        selector.classList.remove("hidden");
+    } else {
+        selector.classList.add("hidden");
+    }
+}

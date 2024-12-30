@@ -215,6 +215,15 @@ header > * {
     margin: 10px;
 }
 
+
+#songSelector {
+    background-color: red;
+    height: 100vh;
+    width: 40%;
+    position: absolute;
+    top: 0;
+}
+
 @font-face {
     font-family: OpenSans-Bold;
     src: url('../assets/font/OpenSans-Bold.ttf');
