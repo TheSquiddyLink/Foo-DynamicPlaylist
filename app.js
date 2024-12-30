@@ -7,11 +7,41 @@ import { parseFile } from 'music-metadata';
 import NodeID3 from 'node-id3';
 import hotReload from './hotReload.cjs';
 import { shell } from 'electron';
+import { exec } from 'child_process'
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const packageJSON = JSON.parse(fs.readFileSync(join(__dirname, 'package.json'), 'utf8'));
 hotReload();
+
+
+function checkFFmpeg(){
+    return new Promise((resolve) => {
+        exec('ffmpeg -version', (error, stdout, stderr) => {
+            if (error) {
+                dialog.showMessageBox(null, {
+                    type: 'warning',
+                    buttons: ['Cancel', 'Continue', 'Download'],
+                    title: 'FFmpeg not found',
+                    message: 'FFmpeg not found. Please install FFmpeg to be able use files other than mp3',
+                    detail: 'Continuing will disable the ability to use files other than mp3',
+                }).then((response) => {
+                    if (response.response === 2) {
+                        shell.openExternal('https://ffmpeg.org/download.html');
+                    } else if (response.response === 1) {
+                        resolve()
+                    } else {
+                        process.exit(0)
+                    }
+                });
+                
+            } else {
+                console.log(`FFmpeg version: ${stdout}`);
+                resolve()
+            }
+        });
+    })
+}
 
 function createWindow () {
     var development = process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true';
@@ -39,10 +69,12 @@ function createWindow () {
     details.responseHeaders['Content-Security-Policy'] = [csp];
         callback({ cancel: false, responseHeaders: details.responseHeaders });
     });
+
 }
 
-app.whenReady().then(() => {
-  createWindow()
+app.whenReady().then(async () => {
+    await checkFFmpeg()
+    createWindow()
 })
 
 app.on('window-all-closed', () => {
