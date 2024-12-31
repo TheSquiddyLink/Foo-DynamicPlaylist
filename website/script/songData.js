@@ -110,8 +110,95 @@ async function getFooLocation(event){
     console.log("Got Foo Location:", response)
 }
 
+async function generateSelector(){
+    console.log("Generating")
+    const response = await sendAndReceive(CHANNELS.getPlaylistJSON);
+    
+    /** @type {Object[]} */
+    const data = JSON.parse(response).files;
+
+    const dataDiv = document.getElementById("songSelectorData");
+    
+    var albums = Array.from(new Set(data.map(song => song.tags.album)));
+    albums.forEach((album, index) => {
+        var element = createAlbumElement(album, index);
+        dataDiv.appendChild(element);
+    });
+    console.log(albums)
+
+    data.forEach((song) => {
+        let index = albums.indexOf(song.tags.album);
+        document.getElementById("album-"+index).querySelector(".songsDiv").appendChild(createSongElement(song, index));
+        console.log("Added Song")
+    });
+    
+}   
+
+function createSongElement(songData, albumIndex){
+    var element = document.createElement("div")
+
+
+    var checkBox = document.createElement("input")
+    checkBox.setAttribute("type", "checkbox")
+    checkBox.id = "song-"+albumIndex
+
+    element.classList.add("songDiv")
+
+    var title = document.createElement("p")
+    title.innerHTML = songData.tags.title;
+    element.appendChild(checkBox)
+    element.appendChild(title)
+    return element;
+}
+
+function createAlbumElement(name, index){
+    var element = document.createElement("div")
+    element.classList.add("albumDiv")
+
+    var header = document.createElement("div")
+    var dropDown = document.createElement("span")
+    dropDown.innerHTML = "▼"
+
+    var nameEle = document.createElement("span")
+    nameEle.innerHTML = name;
+
+    element.id = "album-"+index
+
+    var checkBox = document.createElement("input")
+    checkBox.setAttribute("type", "checkbox")
+    checkBox.addEventListener("change", () => albumChange(index))
+    element.appendChild(checkBox)
+    header.appendChild(dropDown)
+    header.appendChild(nameEle)
+
+    header.addEventListener("click",() => toggleAlbum("album-"+index))
+
+    element.appendChild(header)
+
+    var songs = document.createElement("div")
+    songs.classList.add("songsDiv");
+    element.appendChild(songs)
+    return element;
+}
+
+function toggleAlbum(id){
+    console.log("Toggling: ", id)
+    let element = document.getElementById(id)
+    if (element.hasAttribute("open")) {
+        element.removeAttribute("open")
+    } else {
+        element.setAttribute("open", "")
+    }
+}
+
+function albumChange(index){
+    document.querySelectorAll("#song-"+index).forEach(song => {
+        song.checked = document.getElementById("album-"+index).querySelector("input").checked
+    })
+}
+
 document.getElementById("next").addEventListener("click", (event) => changeSong(event, 'next'));
 document.getElementById("prev").addEventListener("click", (event) => changeSong(event, 'prev'));
 document.getElementById("dataSubmit").addEventListener("click", submitTags);
 document.getElementById("browseFoo").addEventListener("click", getFooLocation);
-
+document.getElementById("generateSelector").addEventListener("click", generateSelector);

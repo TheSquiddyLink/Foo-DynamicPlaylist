@@ -218,12 +218,33 @@ header > * {
 
 #songSelector {
     background-color: red;
-    height: 100vh;
     width: 40%;
-    position: absolute;
+    position: fixed;
     top: 0;
+    bottom: 0;
+    left: 0;
+    overflow-y: scroll;
 }
 
+.albumDiv {
+    background-color: rgba(255, 255, 255, 0.5);
+    margin: 2%;
+    padding: 2%;
+}
+
+.albumDiv > * {
+    display: inline;
+}
+.albumDiv:not([open]) > .songsDiv{
+    display: none;
+    height: 0;
+
+}
+
+.songDiv > * {
+    display: inline;
+    margin-left: 5%;
+}
 @font-face {
     font-family: OpenSans-Bold;
     src: url('../assets/font/OpenSans-Bold.ttf');
