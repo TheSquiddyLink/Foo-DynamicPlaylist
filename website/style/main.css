@@ -194,7 +194,7 @@ header > * {
     margin: 5px;
 }
 
-.data p {
+#data p {
     margin-block-start: 0.5em;
     margin-block-end: 0.5em;
 }

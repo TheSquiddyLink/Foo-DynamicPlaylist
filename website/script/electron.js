@@ -21,6 +21,7 @@ export const CHANNELS = {
     exportData: new Channel('exportData'),
     updateConfig: new Channel('updateConfig'),
     setFooLocation: new Channel('setFooLocation'),
+    bulkSetSongs: new Channel('bulkSetSongs'),
 };
 
 /**

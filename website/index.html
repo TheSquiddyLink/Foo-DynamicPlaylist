@@ -60,7 +60,7 @@
    
     <div class="dataContainer">
         <form id="songDataForm" class="hidden">
-            <div class="data">
+            <div id="data">
                 <p>
                     Song: 
                     <span id="currentIndex">?</span>/
@@ -70,6 +70,16 @@
                 <p id="album"></p>
                 <p id="artist"></p>
             </div>
+            <div id="bulkData" class="hidden">
+                <p>
+                    Editing 
+                    <span id="bulkSize">0</span>
+                    Songs
+                </p>
+                <pre id="bulkArray" class="hidden"></pre>
+            </div>
+            <label for="bulkEditing">Bulk Editing</label>
+            <input type="checkbox" id="bulkEditing">
             <div class="settings">
                 <label for="timeOfDay">Time of Day</label>
                 <div>
@@ -150,6 +160,7 @@
         <!-- TODO: Remove debug button -->
         <button id="generateSelector">Generate</button>
 
+        <button id="loadSelected">Load Selected</button>
         <div id="songSelectorData">
             
         </div>

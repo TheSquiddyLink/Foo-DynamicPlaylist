@@ -202,6 +202,24 @@ ipcMain.on(CHANNELS.setFooLocation.send, async (event, arg) => {
         }
     });
 })
+
+
+ipcMain.on(CHANNELS.bulkSetSongs.send, async (event, arg)=> {
+    var songs = arg.songs;
+    var data = arg.data;
+
+    songs.forEach((index) => {
+        var argument = {
+            index: index,
+            timeOfDay: data.timeOfDay,
+            temp: data.temp,
+            weather: data.weather
+        }
+
+        setSong(null, argument)
+    });
+})
+
 function setSong(event, arg) {
     const index = arg.index;
     const song = playlistData.files[index];

@@ -97,9 +97,15 @@ function submitTags(event){
         weather: weather
     }
 
-    
-
-    sendMessage(CHANNELS.setSong.send, formData);
+    const bulkEditing = document.getElementById("bulkEditing").checked;
+    if (bulkEditing) {
+        const songs = JSON.parse(document.getElementById("bulkArray").innerHTML);
+        console.log(songs);
+        sendMessage(CHANNELS.bulkSetSongs.send, { songs: songs, data: formData });
+    }
+    else {
+        sendMessage(CHANNELS.setSong.send, formData);
+    }
 }
 
 async function getFooLocation(event){
@@ -126,20 +132,21 @@ async function generateSelector(){
     });
     console.log(albums)
 
-    data.forEach((song) => {
+    data.forEach((song, songIndex) => {
         let index = albums.indexOf(song.tags.album);
-        document.getElementById("album-"+index).querySelector(".songsDiv").appendChild(createSongElement(song, index));
+        document.getElementById("album-"+index).querySelector(".songsDiv").appendChild(createSongElement(song, index, songIndex));
         console.log("Added Song")
     });
     
 }   
 
-function createSongElement(songData, albumIndex){
+function createSongElement(songData, albumIndex, songIndex){
     var element = document.createElement("div")
 
 
     var checkBox = document.createElement("input")
     checkBox.setAttribute("type", "checkbox")
+    checkBox.name = songIndex;
     checkBox.id = "song-"+albumIndex
 
     element.classList.add("songDiv")
@@ -197,8 +204,46 @@ function albumChange(index){
     })
 }
 
+function loadSelectedSongs(){
+    var data = document.getElementById("songSelectorData");
+
+    var songs = []
+    data.querySelectorAll(".songDiv").forEach(song => {
+        var input  = song.querySelector("input");
+        if (input.checked) {
+            songs.push(Number(input.name))
+        }
+    })
+
+    document.getElementById("data").classList.add("hidden")
+
+    document.getElementById("bulkSize").innerHTML = songs.length;
+    document.getElementById("bulkEditing").checked = true
+    resetSettings();
+
+    document.getElementById("bulkArray").innerHTML = JSON.stringify(songs);
+}
+
+function resetSettings(){
+    document.querySelector(".settings").querySelectorAll("input").forEach(input => {
+        input.checked = false;
+    })
+}
+
+
+function toggleBulkEditing(event){
+    if (event.target.checked) {
+        document.getElementById("data").classList.add("hidden")
+        document.getElementById("bulkData").classList.remove("hidden")
+    } else {
+        document.getElementById("data").classList.remove("hidden")
+        document.getElementById("bulkData").classList.add("hidden")
+    }
+}
 document.getElementById("next").addEventListener("click", (event) => changeSong(event, 'next'));
 document.getElementById("prev").addEventListener("click", (event) => changeSong(event, 'prev'));
 document.getElementById("dataSubmit").addEventListener("click", submitTags);
 document.getElementById("browseFoo").addEventListener("click", getFooLocation);
 document.getElementById("generateSelector").addEventListener("click", generateSelector);
+document.getElementById("loadSelected").addEventListener("click", loadSelectedSongs)
+document.getElementById("bulkEditing").addEventListener("change", toggleBulkEditing)
