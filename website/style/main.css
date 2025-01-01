@@ -217,19 +217,22 @@ header > * {
 
 
 #songSelector {
-    background-color: red;
+    background-image: linear-gradient(90deg, #88c64a, hsl(184, 50%, 54%));
     width: 40%;
     position: fixed;
     top: 0;
     bottom: 0;
     left: 0;
     overflow-y: scroll;
+    padding: 10px;
+    transition: width 0.3s ease-in-out;
 }
 
 .albumDiv {
     background-color: rgba(255, 255, 255, 0.5);
     margin: 2%;
-    padding: 2%;
+    padding: 5%;
+    border-radius: 50px;
 }
 
 .albumDiv > * {
@@ -244,6 +247,38 @@ header > * {
 .songDiv > * {
     display: inline;
     margin-left: 5%;
+}
+
+
+button {
+    background-color: rgb(189, 40, 182);
+    color: white;
+    text-transform: uppercase;
+    border-radius: 30px;
+    border-width: 5px;
+    border-color: rgb(164, 40, 189);
+    border-style: solid;
+    cursor: pointer;
+
+    transition: all 0.2s ease-in-out;
+}
+
+button:disabled {
+    background-color: darkgrey;
+    border-color: gray;
+    color: white;
+}
+
+input[type="checkbox"]{
+    cursor: pointer;
+}
+
+
+#songSelector.hidden2 {
+    width: 0%;
+
+    padding: 0;
+    margin: 0;
 }
 @font-face {
     font-family: OpenSans-Bold;

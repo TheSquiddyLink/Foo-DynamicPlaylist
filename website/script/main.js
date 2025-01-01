@@ -98,8 +98,8 @@ document.getElementById("hideSelector").addEventListener("click", function() {
 function toggleSelector(show){
     var selector = document.getElementById("songSelector");
     if(show){
-        selector.classList.remove("hidden");
+        selector.classList.remove("hidden2");
     } else {
-        selector.classList.add("hidden");
+        selector.classList.add("hidden2");
     }
 }
