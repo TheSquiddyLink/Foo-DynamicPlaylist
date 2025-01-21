@@ -124,6 +124,7 @@ async function generateSelector(){
     const data = JSON.parse(response).files;
 
     const dataDiv = document.getElementById("songSelectorData");
+    dataDiv.innerHTML = "";
     
     var albums = Array.from(new Set(data.map(song => song.tags.album)));
     albums.forEach((album, index) => {
@@ -151,7 +152,7 @@ function createSongElement(songData, albumIndex, songIndex){
 
     element.classList.add("songDiv")
 
-    var title = document.createElement("p")
+    var title = document.createElement("label")
     title.innerHTML = songData.tags.title;
     element.appendChild(checkBox)
     element.appendChild(title)
@@ -163,9 +164,17 @@ function createAlbumElement(name, index){
     element.classList.add("albumDiv")
 
     var header = document.createElement("div")
+    header.classList.add("albumHeader")
     var dropDown = document.createElement("span")
     dropDown.innerHTML = "▼"
+    dropDown.classList.add("dropDownIcon")
 
+    var dropDown2 = document.createElement("span")
+    dropDown2.innerHTML = "▲"
+    dropDown2.classList.add("dropDownIcon2")
+    dropDown2.classList.add("hidden")
+    header.appendChild(dropDown2)
+    
     var nameEle = document.createElement("span")
     nameEle.innerHTML = name;
 

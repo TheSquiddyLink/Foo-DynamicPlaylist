@@ -238,10 +238,26 @@ header > * {
 .albumDiv > * {
     display: inline;
 }
+
 .albumDiv:not([open]) > .songsDiv{
     display: none;
     height: 0;
+}
 
+.albumHeader {
+    cursor: pointer;
+}
+
+.albumDiv:is([open]) > .albumHeader > .dropDownIcon {
+    display: none;
+}
+
+.albumDiv:not([open]) > .albumHeader > .dropDownIcon2 {
+    display: none;
+}
+
+.albumDiv:is([open]) > .albumHeader > .dropDownIcon2 {
+    display: inline;
 }
 
 .songDiv > * {
@@ -255,7 +271,7 @@ button {
     color: white;
     text-transform: uppercase;
     border-radius: 30px;
-    border-width: 5px;
+    border-width: 3px;
     border-color: rgb(164, 40, 189);
     border-style: solid;
     cursor: pointer;
@@ -269,6 +285,16 @@ button:disabled {
     color: white;
 }
 
+button:hover {
+    background-color: rgb(164, 40, 189);
+    border-color: rgb(189, 40, 182);
+}
+
+button:disabled:hover {
+    background-color: gray;
+    border-color: darkgrey;
+}
+
 input[type="checkbox"]{
     cursor: pointer;
 }
@@ -280,6 +306,12 @@ input[type="checkbox"]{
     padding: 0;
     margin: 0;
 }
+
+#songSelector.hidden2 * {
+    overflow: hidden;
+    white-space: nowrap;
+}
+
 @font-face {
     font-family: OpenSans-Bold;
     src: url('../assets/font/OpenSans-Bold.ttf');

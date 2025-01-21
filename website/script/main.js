@@ -89,17 +89,28 @@ function exportData(event){
  
 }
 
-document.getElementById("showSelector").addEventListener("click", function() {
+document.getElementById("showSelector").addEventListener("click", function(event) {
+    event.preventDefault();
     toggleSelector(true);
 });
-document.getElementById("hideSelector").addEventListener("click", function() {
+document.getElementById("hideSelector").addEventListener("click", function(event) {
+    event.preventDefault();
     toggleSelector(false);
 });
 function toggleSelector(show){
     var selector = document.getElementById("songSelector");
     if(show){
         selector.classList.remove("hidden2");
+        document.getElementById("generateSelector").click()
     } else {
         selector.classList.add("hidden2");
     }
 }
+
+var songSelector = document.getElementById("songSelector");
+
+window.addEventListener("click", function(event){
+    if (!songSelector.contains(event.target) && event.target.id != "showSelector") {
+        toggleSelector(false);
+    }
+});

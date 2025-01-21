@@ -70,6 +70,8 @@
                 <p id="album"></p>
                 <p id="artist"></p>
             </div>
+            <label for="bulkEditing">Bulk Editing</label>
+            <input type="checkbox" id="bulkEditing">
             <div id="bulkData" class="hidden">
                 <p>
                     Editing 
@@ -77,9 +79,10 @@
                     Songs
                 </p>
                 <pre id="bulkArray" class="hidden"></pre>
+                <div style="margin: 20px">
+                    <button id="showSelector">Bulk Editor</button>
+                </div>
             </div>
-            <label for="bulkEditing">Bulk Editing</label>
-            <input type="checkbox" id="bulkEditing">
             <div class="settings">
                 <label for="timeOfDay">Time of Day</label>
                 <div>
@@ -158,14 +161,13 @@
     <div id="songSelector" class="hidden2">
         <button id="hideSelector">Hide Selector</button>
         <!-- TODO: Remove debug button -->
-        <button id="generateSelector">Generate</button>
+        <button id="generateSelector">Reload</button>
 
         <button id="loadSelected">Load Selected</button>
         <div id="songSelectorData">
             
         </div>
     </div>
-    <button id="showSelector">Show Selector</button>
 </body>
 <script src="./script/progressbar.js" type="module"></script>
 <script src="./script/songData.js" type="module"></script>
